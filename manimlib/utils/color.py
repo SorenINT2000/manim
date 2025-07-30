@@ -20,6 +20,9 @@ if TYPE_CHECKING:
 
 
 def color_to_rgb(color: ManimColor) -> Vect3:
+    """
+    Converts a color to an RGB tuple.
+    """
     if isinstance(color, str):
         return hex_to_rgb(color)
     elif isinstance(color, Color):
@@ -29,10 +32,16 @@ def color_to_rgb(color: ManimColor) -> Vect3:
 
 
 def color_to_rgba(color: ManimColor, alpha: float = 1.0) -> Vect4:
+    """
+    Converts a color to an RGBA tuple.
+    """
     return np.array([*color_to_rgb(color), alpha])
 
 
 def rgb_to_color(rgb: Vect3 | Sequence[float]) -> Color:
+    """
+    Converts an RGB tuple to a color.
+    """
     try:
         return Color(rgb=tuple(rgb))
     except ValueError:
@@ -40,39 +49,66 @@ def rgb_to_color(rgb: Vect3 | Sequence[float]) -> Color:
 
 
 def rgba_to_color(rgba: Vect4) -> Color:
+    """
+    Converts an RGBA tuple to a color.
+    """
     return rgb_to_color(rgba[:3])
 
 
 def rgb_to_hex(rgb: Vect3 | Sequence[float]) -> str:
+    """
+    Converts an RGB tuple to a hex code.
+    """
     return rgb2hex(rgb, force_long=True).upper()
 
 
 def hex_to_rgb(hex_code: str) -> Vect3:
+    """
+    Converts a hex code to an RGB tuple.
+    """
     return np.array(hex2rgb(hex_code))
 
 
 def invert_color(color: ManimColor) -> Color:
+    """
+    Inverts a color.
+    """
     return rgb_to_color(1.0 - color_to_rgb(color))
 
 
 def color_to_int_rgb(color: ManimColor) -> np.ndarray[int, np.dtype[np.uint8]]:
+    """
+    Converts a color to an integer RGB tuple.
+    """
     return (255 * color_to_rgb(color)).astype('uint8')
 
 
 def color_to_int_rgba(color: ManimColor, opacity: float = 1.0) -> np.ndarray[int, np.dtype[np.uint8]]:
+    """
+    Converts a color to an integer RGBA tuple.
+    """
     alpha = int(255 * opacity)
     return np.array([*color_to_int_rgb(color), alpha], dtype=np.uint8)
 
 
 def color_to_hex(color: ManimColor) -> str:
+    """
+    Converts a color to a hex code.
+    """
     return Color(color).get_hex_l().upper()
 
 
 def hex_to_int(rgb_hex: str) -> int:
+    """
+    Converts a hex code to an integer.
+    """
     return int(rgb_hex[1:], 16)
 
 
 def int_to_hex(rgb_int: int) -> str:
+    """
+    Converts an integer to a hex code.
+    """
     return f"#{rgb_int:06x}".upper()
 
 
@@ -80,6 +116,10 @@ def color_gradient(
     reference_colors: Iterable[ManimColor],
     length_of_output: int
 ) -> list[Color]:
+    """
+    Returns a list of colors that form a gradient between the
+    reference colors.
+    """
     if length_of_output == 0:
         return []
     rgbs = list(map(color_to_rgb, reference_colors))
@@ -100,6 +140,9 @@ def interpolate_color(
     color2: ManimColor,
     alpha: float
 ) -> Color:
+    """
+    Interpolates between two colors.
+    """
     rgb = np.sqrt(interpolate(color_to_rgb(color1)**2, color_to_rgb(color2)**2, alpha))
     return rgb_to_color(rgb)
 
@@ -109,17 +152,26 @@ def interpolate_color_by_hsl(
     color2: ManimColor,
     alpha: float
 ) -> Color:
+    """
+    Interpolates between two colors using HSL values.
+    """
     hsl1 = np.array(Color(color1).get_hsl())
     hsl2 = np.array(Color(color2).get_hsl())
     return Color(hsl=interpolate(hsl1, hsl2, alpha))
 
 
 def average_color(*colors: ManimColor) -> Color:
+    """
+    Averages a list of colors.
+    """
     rgbs = np.array(list(map(color_to_rgb, colors)))
     return rgb_to_color(np.sqrt((rgbs**2).mean(0)))
 
 
 def random_color() -> Color:
+    """
+    Returns a random color.
+    """
     return Color(rgb=tuple(np.random.random(3)))
 
 
@@ -128,6 +180,9 @@ def random_bright_color(
     saturation_range: tuple[float, float] = (0.5, 0.8),
     luminance_range: tuple[float, float] = (0.5, 1.0),
 ) -> Color:
+    """
+    Returns a random bright color.
+    """
     return Color(hsl=(
         interpolate(*hue_range, random.random()),
         interpolate(*saturation_range, random.random()),
@@ -156,6 +211,9 @@ def get_colormap_from_colors(colors: Iterable[ManimColor]) -> Callable[[Sequence
 
 
 def get_color_map(map_name: str) -> Callable[[Sequence[float]], Vect4Array]:
+    """
+    Returns a color map function.
+    """
     if map_name == "3b1b_colormap":
         return get_colormap_from_colors(COLORMAP_3B1B)
     return pyplot.get_cmap(map_name)

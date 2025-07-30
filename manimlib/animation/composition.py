@@ -25,6 +25,31 @@ DEFAULT_LAGGED_START_LAG_RATIO = 0.05
 
 
 class AnimationGroup(Animation):
+    """
+    A group of animations that are played together.
+
+    This class is used to play multiple animations at the same time. The
+    animations can be played in parallel, in sequence, or with a time lag
+    between them.
+
+    Parameters
+    ----------
+    animations
+        A list of animations to be played.
+    run_time
+        The total run time of the animation group. If -1, the run time is
+        calculated as the sum of the run times of the individual animations.
+    lag_ratio
+        A value that controls the timing of animations in the group. If 0,
+        all animations are played at the same time. If 1, they are played
+        in sequence.
+    group
+        The mobject that the animations are applied to. If None, the group
+        is created automatically from the mobjects of the individual
+        animations.
+    group_type
+        The type of group to create if `group` is None.
+    """
     def __init__(
         self,
         *args: AnimationType | Iterable[AnimationType],
@@ -122,6 +147,20 @@ class AnimationGroup(Animation):
 
 
 class Succession(AnimationGroup):
+    """
+    A group of animations that are played in sequence.
+
+    This class is a subclass of `AnimationGroup` and is used to play multiple
+    animations one after another.
+
+    Parameters
+    ----------
+    animations
+        A list of animations to be played in sequence.
+    lag_ratio
+        The time lag between the end of one animation and the start of the
+        next.
+    """
     def __init__(
         self,
         *animations: Animation,
@@ -154,6 +193,19 @@ class Succession(AnimationGroup):
 
 
 class LaggedStart(AnimationGroup):
+    """
+    A group of animations that are played with a time lag between them.
+
+    This class is a subclass of `AnimationGroup` and is used to play multiple
+    animations with a specified time lag between the start of each animation.
+
+    Parameters
+    ----------
+    animations
+        A list of animations to be played.
+    lag_ratio
+        The time lag between the start of each animation.
+    """
     def __init__(
         self,
         *animations,
@@ -164,6 +216,24 @@ class LaggedStart(AnimationGroup):
 
 
 class LaggedStartMap(LaggedStart):
+    """
+    A group of animations that are created by applying a function to a group of mobjects.
+
+    This class is a subclass of `LaggedStart` and is used to create a group of
+    animations by applying a function to each mobject in a group. The
+    animations are then played with a specified time lag between them.
+
+    Parameters
+    ----------
+    anim_func
+        The function that creates an animation for each mobject.
+    group
+        The group of mobjects to be animated.
+    run_time
+        The total run time of the animation group.
+    lag_ratio
+        The time lag between the start of each animation.
+    """
     def __init__(
         self,
         anim_func: Callable[[Mobject], Animation],

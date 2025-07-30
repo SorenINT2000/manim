@@ -26,6 +26,7 @@ if TYPE_CHECKING:
 
 
 class SceneFileWriter(object):
+    """A class to write scenes to a file."""
     def __init__(
         self,
         scene: Scene,

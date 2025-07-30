@@ -21,6 +21,33 @@ if TYPE_CHECKING:
 
 
 class Window(PygletWindow):
+    """
+    A class for creating and managing a window for Manim animations.
+
+    This class is a subclass of `moderngl_window.context.pyglet.window.Window`
+    and is responsible for creating and managing the window in which Manim
+    animations are displayed. It handles the window's size, position, event
+    handling, and its interaction with the scene.
+
+    Parameters
+    ----------
+    scene
+        The scene to be displayed in the window.
+    position_string
+        A string that specifies the position of the window on the screen.
+    monitor_index
+        The index of the monitor on which the window should be displayed.
+    full_screen
+        A boolean indicating whether the window should be displayed in full-screen
+        mode.
+    size
+        A tuple of two integers that specifies the size of the window in pixels.
+    position
+        A tuple of two integers that specifies the position of the window on the
+        screen.
+    samples
+        The number of samples to use for multisample anti-aliasing.
+    """
     fullscreen: bool = False
     resizable: bool = True
     gl_version: tuple[int, int] = (3, 3)

@@ -14,6 +14,9 @@ if TYPE_CHECKING:
 
 
 def get_full_raster_image_path(image_file_name: str) -> str:
+    """
+    Returns the full path to a raster image file.
+    """
     return find_file(
         image_file_name,
         directories=[get_raster_image_dir()],
@@ -22,6 +25,9 @@ def get_full_raster_image_path(image_file_name: str) -> str:
 
 
 def get_full_vector_image_path(image_file_name: str) -> str:
+    """
+    Returns the full path to a vector image file.
+    """
     return find_file(
         image_file_name,
         directories=[get_vector_image_dir()],
@@ -30,6 +36,9 @@ def get_full_vector_image_path(image_file_name: str) -> str:
 
 
 def invert_image(image: Iterable) -> Image.Image:
+    """
+    Inverts the colors of an image.
+    """
     arr = np.array(image)
     arr = (255 * np.ones(arr.shape)).astype(arr.dtype) - arr
     return Image.fromarray(arr)

@@ -30,6 +30,7 @@ if TYPE_CHECKING:
 
 
 class Brace(Tex):
+    """A mobject that shows a brace."""
     def __init__(
         self,
         mobject: Mobject,
@@ -108,6 +109,7 @@ class Brace(Tex):
 
 
 class BraceLabel(VMobject):
+    """A brace with a label."""
     label_constructor: type = Tex
 
     def __init__(
@@ -173,10 +175,12 @@ class BraceLabel(VMobject):
 
 
 class BraceText(BraceLabel):
+    """A brace with a text label."""
     label_constructor: type = TexText
 
 
 class LineBrace(Brace):
+    """A brace for a line."""
     def __init__(self, line: Line, direction=UP, **kwargs):
         angle = line.get_angle()
         line.rotate(-angle)

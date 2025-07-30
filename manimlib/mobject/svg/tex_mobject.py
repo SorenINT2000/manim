@@ -22,6 +22,7 @@ TEX_MOB_SCALE_FACTOR = 0.001
 
 
 class Tex(StringMobject):
+    """A mobject that displays a string of TeX."""
     tex_environment: str = "align*"
 
     def __init__(
@@ -268,4 +269,5 @@ class Tex(StringMobject):
 
 
 class TexText(Tex):
+    """A mobject that displays a string of text."""
     tex_environment: str = ""

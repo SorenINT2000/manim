@@ -21,6 +21,9 @@ if TYPE_CHECKING:
 
 
 class NumberLine(Line):
+    """
+    A line with numbers and ticks.
+    """
     def __init__(
         self,
         x_range: RangeSpecifier = (-8, 8, 1),
@@ -218,6 +221,9 @@ class NumberLine(Line):
 
 
 class UnitInterval(NumberLine):
+    """
+    A number line from 0 to 1.
+    """
     def __init__(
         self,
         x_range: RangeSpecifier = (0, 1, 0.1),

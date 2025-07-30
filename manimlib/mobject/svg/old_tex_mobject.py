@@ -20,6 +20,7 @@ SCALE_FACTOR_PER_FONT_POINT = 0.001
 
 
 class SingleStringTex(SVGMobject):
+    """A single string of TeX."""
     height: float | None = None
 
     def __init__(
@@ -181,6 +182,7 @@ class SingleStringTex(SVGMobject):
 
 
 class OldTex(SingleStringTex):
+    """A string of TeX, with parts that can be colored differently."""
     def __init__(
         self,
         *tex_strings: str,
@@ -317,6 +319,7 @@ class OldTex(SingleStringTex):
 
 
 class OldTexText(OldTex):
+    """A string of text, with parts that can be colored differently."""
     def __init__(
         self,
         *tex_strings: str,

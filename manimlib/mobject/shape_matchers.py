@@ -20,6 +20,9 @@ if TYPE_CHECKING:
 
 
 class SurroundingRectangle(Rectangle):
+    """
+    A rectangle that surrounds a mobject.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -46,6 +49,9 @@ class SurroundingRectangle(Rectangle):
 
 
 class BackgroundRectangle(SurroundingRectangle):
+    """
+    A rectangle that serves as a background for a mobject.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -97,6 +103,9 @@ class BackgroundRectangle(SurroundingRectangle):
 
 
 class Cross(VGroup):
+    """
+    A cross.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -114,6 +123,9 @@ class Cross(VGroup):
 
 
 class Underline(Line):
+    """
+    An underline.
+    """
     def __init__(
         self,
         mobject: Mobject,

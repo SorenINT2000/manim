@@ -26,6 +26,12 @@ if TYPE_CHECKING:
 
 
 class Surface(Mobject):
+    """
+    A 3D surface.
+
+    This mobject is used to create a 3D surface. The surface is defined
+    by a function that maps (u, v) coordinates to (x, y, z) coordinates.
+    """
     render_primitive: int = moderngl.TRIANGLES
     shader_folder: str = "surface"
     data_dtype: np.dtype = np.dtype([
@@ -245,6 +251,11 @@ class Surface(Mobject):
 
 
 class ParametricSurface(Surface):
+    """
+    A parametric surface.
+
+    This is a surface that is defined by a parametric function.
+    """
     def __init__(
         self,
         uv_func: Callable[[float, float], Iterable[float]],
@@ -260,6 +271,9 @@ class ParametricSurface(Surface):
 
 
 class SGroup(Surface):
+    """
+    A group of surfaces.
+    """
     def __init__(
         self,
         *parametric_surfaces: Surface,
@@ -273,6 +287,11 @@ class SGroup(Surface):
 
 
 class TexturedSurface(Surface):
+    """
+    A textured surface.
+
+    This is a surface that is textured with an image.
+    """
     shader_folder: str = "textured_surface"
     data_dtype: Sequence[Tuple[str, type, Tuple[int]]] = [
         ('point', np.float32, (3,)),

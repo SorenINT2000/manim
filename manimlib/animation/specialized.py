@@ -14,6 +14,34 @@ if TYPE_CHECKING:
 
 
 class Broadcast(LaggedStart):
+    """
+    Animates a broadcast effect.
+
+    This animation shows a series of concentric circles emanating from a
+    focal point, creating a "broadcast" effect.
+
+    Parameters
+    ----------
+    focal_point
+        The point from which the broadcast emanates.
+    small_radius
+        The radius of the smallest circle.
+    big_radius
+        The radius of the largest circle.
+    n_circles
+        The number of circles in the broadcast.
+    start_stroke_width
+        The stroke width of the smallest circle.
+    color
+        The color of the circles.
+    run_time
+        The duration of the animation.
+    lag_ratio
+        The time lag between the start of each circle's animation.
+    remover
+        A boolean indicating whether the circles should be removed from the
+        scene after the animation is complete.
+    """
     def __init__(
         self,
         focal_point: np.ndarray,

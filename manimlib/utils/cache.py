@@ -19,6 +19,9 @@ _cache = Cache(get_cache_dir(), size_limit=CACHE_SIZE)
 
 
 def cache_on_disk(func: Callable[..., T]) -> Callable[..., T]:
+    """
+    A decorator to cache the output of a function on disk.
+    """
     @wraps(func)
     def wrapper(*args, **kwargs):
         key = hash_string(f"{func.__name__}{args}{kwargs}")
@@ -31,4 +34,7 @@ def cache_on_disk(func: Callable[..., T]) -> Callable[..., T]:
 
 
 def clear_cache():
+    """
+    Clears the cache.
+    """
     _cache.clear()

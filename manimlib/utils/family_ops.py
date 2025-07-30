@@ -12,6 +12,9 @@ def extract_mobject_family_members(
     mobject_list: Iterable[Mobject],
     exclude_pointless: bool = False
 ) -> list[Mobject]:
+    """
+    Extracts all family members of a list of mobjects.
+    """
     return [
         sm
         for mob in mobject_list

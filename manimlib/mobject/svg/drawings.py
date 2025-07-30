@@ -77,16 +77,19 @@ if TYPE_CHECKING:
 
 
 class Checkmark(TexTextFromPresetString):
+    """A checkmark."""
     tex: str = R"\ding{51}"
     default_color: ManimColor = GREEN
 
 
 class Exmark(TexTextFromPresetString):
+    """An X mark."""
     tex: str = R"\ding{55}"
     default_color: ManimColor = RED
 
 
 class Lightbulb(SVGMobject):
+    """A lightbulb."""
     file_name = "lightbulb"
 
     def __init__(
@@ -108,6 +111,7 @@ class Lightbulb(SVGMobject):
 
 
 class Speedometer(VMobject):
+    """A speedometer."""
     def __init__(
         self,
         arc_angle: float = 4 * PI / 3,
@@ -185,6 +189,7 @@ class Speedometer(VMobject):
 
 
 class Laptop(VGroup):
+    """A laptop."""
     def __init__(
         self,
         width: float = 3,
@@ -263,6 +268,7 @@ class Laptop(VGroup):
 
 
 class VideoIcon(SVGMobject):
+    """An icon of a video camera."""
     file_name: str = "video_icon"
 
     def __init__(
@@ -276,6 +282,7 @@ class VideoIcon(SVGMobject):
 
 
 class VideoSeries(VGroup):
+    """A series of video icons."""
     def __init__(
         self,
         num_videos: int = 11,
@@ -293,6 +300,7 @@ class VideoSeries(VGroup):
 
 
 class Clock(VGroup):
+    """A clock."""
     def __init__(
         self,
         stroke_color: ManimColor = WHITE,
@@ -320,6 +328,7 @@ class Clock(VGroup):
 
 
 class ClockPassesTime(AnimationGroup):
+    """An animation of a clock passing time."""
     def __init__(
         self,
         clock: Clock,
@@ -351,6 +360,7 @@ class ClockPassesTime(AnimationGroup):
 
 
 class Bubble(VGroup):
+    """A bubble."""
     file_name: str = "Bubbles_speech.svg"
     bubble_center_adjustment_factor = 0.125
 
@@ -460,6 +470,7 @@ class Bubble(VGroup):
 
 
 class SpeechBubble(Bubble):
+    """A speech bubble."""
     def __init__(
         self,
         content: str | VMobject | None = None,
@@ -494,6 +505,7 @@ class SpeechBubble(Bubble):
 
 
 class ThoughtBubble(Bubble):
+    """A thought bubble."""
     def __init__(
         self,
         content: str | VMobject | None = None,
@@ -549,14 +561,17 @@ class ThoughtBubble(Bubble):
 
 
 class OldSpeechBubble(Bubble):
+    """An old-style speech bubble."""
     file_name: str = "Bubbles_speech.svg"
 
 
 class DoubleSpeechBubble(Bubble):
+    """A double speech bubble."""
     file_name: str = "Bubbles_double_speech.svg"
 
 
 class OldThoughtBubble(Bubble):
+    """An old-style thought bubble."""
     file_name: str = "Bubbles_thought.svg"
 
     def get_body(self, content: VMobject, direction: Vect3, buff: float) -> VMobject:
@@ -570,6 +585,7 @@ class OldThoughtBubble(Bubble):
 
 
 class VectorizedEarth(SVGMobject):
+    """A vectorized image of the Earth."""
     file_name: str = "earth"
 
     def __init__(
@@ -590,6 +606,7 @@ class VectorizedEarth(SVGMobject):
 
 
 class Piano(VGroup):
+    """A piano."""
     def __init__(
         self,
         n_white_keys = 52,
@@ -654,6 +671,7 @@ class Piano(VGroup):
 
 
 class Piano3D(VGroup):
+    """A 3D piano."""
     def __init__(
         self,
         shading: Tuple[float, float, float] = (1.0, 0.2, 0.2),
@@ -684,6 +702,7 @@ class Piano3D(VGroup):
 
 
 class DieFace(VGroup):
+    """A face of a die."""
     def __init__(
         self,
         value: int,
@@ -731,6 +750,7 @@ class DieFace(VGroup):
 
 
 class Dartboard(VGroup):
+    """A dartboard."""
     radius = 3
     n_sectors = 20
 

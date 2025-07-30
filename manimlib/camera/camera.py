@@ -23,6 +23,43 @@ if TYPE_CHECKING:
 
 
 class Camera(object):
+    """
+    A class that represents the camera.
+
+    This class is responsible for managing the camera's properties, such as
+    its resolution, background color, and light source. It also provides
+    methods for capturing the scene and getting the resulting image or pixel
+    array.
+
+    Parameters
+    ----------
+    window
+        The window to which the camera is attached.
+    background_image
+        The background image of the scene.
+    frame_config
+        A dictionary of configuration options for the camera frame.
+    resolution
+        The resolution of the camera.
+    fps
+        The frames per second of the camera.
+    background_color
+        The background color of the scene.
+    background_opacity
+        The opacity of the background color.
+    max_allowable_norm
+        The maximum allowable norm for points in vectorized mobjects.
+    image_mode
+        The image mode to use for the camera.
+    n_channels
+        The number of channels to use for the camera.
+    pixel_array_dtype
+        The data type to use for the pixel array.
+    light_source_position
+        The position of the light source.
+    samples
+        The number of samples to use for multisampling.
+    """
     def __init__(
         self,
         window: Optional[Window] = None,
@@ -257,5 +294,17 @@ class Camera(object):
 
 # Mostly just defined so old scenes don't break
 class ThreeDCamera(Camera):
+    """
+    A camera for 3D scenes.
+
+    This class is a subclass of `Camera` and is specialized for 3D scenes.
+    It uses a higher number of samples for multisampling to improve the
+    quality of the rendered image.
+
+    Parameters
+    ----------
+    samples
+        The number of samples to use for multisampling.
+    """
     def __init__(self, samples: int = 4, **kwargs):
         super().__init__(samples=samples, **kwargs)

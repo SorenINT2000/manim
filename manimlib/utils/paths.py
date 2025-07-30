@@ -59,8 +59,16 @@ def path_along_arc(
 
 
 def clockwise_path() -> Callable[[Vect3Array, Vect3Array, float], Vect3Array]:
+    """
+    Returns a function that takes in a start point, end point, and alpha, and returns a point on the clockwise
+    arc path.
+    """
     return path_along_arc(-np.pi)
 
 
 def counterclockwise_path() -> Callable[[Vect3Array, Vect3Array, float], Vect3Array]:
+    """
+    Returns a function that takes in a start point, end point, and alpha, and returns a point on the counterclockwise
+    arc path.
+    """
     return path_along_arc(np.pi)

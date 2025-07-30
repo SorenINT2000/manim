@@ -64,6 +64,8 @@ ALL_MODIFIERS = PygletWindowKeys.MOD_CTRL | PygletWindowKeys.MOD_COMMAND | Pygle
 
 class InteractiveScene(Scene):
     """
+    This scene is used to interact with mobjects on the screen.
+
     To select mobjects on screen, hold ctrl and move the mouse to highlight a region,
     or just tap ctrl to select the mobject under the cursor.
 

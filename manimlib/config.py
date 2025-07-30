@@ -52,6 +52,14 @@ def initialize_manim_config() -> Dict:
 
 
 def parse_cli():
+    """
+    Parse command line arguments.
+
+    Returns
+    -------
+    argparse.Namespace
+        The parsed arguments.
+    """
     try:
         parser = argparse.ArgumentParser()
         module_location = parser.add_mutually_exclusive_group()
@@ -233,6 +241,14 @@ def parse_cli():
 
 
 def update_directory_config(config: Dict):
+    """
+    Update the directory configuration.
+
+    Parameters
+    ----------
+    config
+        The configuration dictionary.
+    """
     dir_config = config.directories
     base = dir_config.base
     for key, subdir in dir_config.subdirs.items():
@@ -240,6 +256,16 @@ def update_directory_config(config: Dict):
 
 
 def update_window_config(config: Dict, args: Namespace):
+    """
+    Update the window configuration.
+
+    Parameters
+    ----------
+    config
+        The configuration dictionary.
+    args
+        The command line arguments.
+    """
     window_config = config.window
     for key in "position", "size":
         if window_config.get(key):
@@ -249,6 +275,16 @@ def update_window_config(config: Dict, args: Namespace):
 
 
 def update_camera_config(config: Dict, args: Namespace):
+    """
+    Update the camera configuration.
+
+    Parameters
+    ----------
+    config
+        The configuration dictionary.
+    args
+        The command line arguments.
+    """
     camera_config = config.camera
     arg_resolution = get_resolution_from_args(args, config.resolution_options)
     camera_config.resolution = arg_resolution or literal_eval(camera_config.resolution)
@@ -266,6 +302,16 @@ def update_camera_config(config: Dict, args: Namespace):
 
 
 def update_file_writer_config(config: Dict, args: Namespace):
+    """
+    Update the file writer configuration.
+
+    Parameters
+    ----------
+    config
+        The configuration dictionary.
+    args
+        The command line arguments.
+    """
     file_writer_config = config.file_writer
     file_writer_config.update(
         write_to_movie=(not args.skip_animations and args.write_file),
@@ -293,6 +339,16 @@ def update_file_writer_config(config: Dict, args: Namespace):
 
 
 def update_scene_config(config: Dict, args: Namespace):
+    """
+    Update the scene configuration.
+
+    Parameters
+    ----------
+    config
+        The configuration dictionary.
+    args
+        The command line arguments.
+    """
     scene_config = config.scene
     start, end = get_animations_numbers(args)
     scene_config.update(
@@ -313,6 +369,16 @@ def update_scene_config(config: Dict, args: Namespace):
 
 
 def update_run_config(config: Dict, args: Namespace):
+    """
+    Update the run configuration.
+
+    Parameters
+    ----------
+    config
+        The configuration dictionary.
+    args
+        The command line arguments.
+    """
     config.run = Dict(
         file_name=args.file,
         embed_line=(int(args.embed) if args.embed is not None else None),
@@ -326,6 +392,16 @@ def update_run_config(config: Dict, args: Namespace):
 
 
 def update_embed_config(config: Dict, args: Namespace):
+    """
+    Update the embed configuration.
+
+    Parameters
+    ----------
+    config
+        The configuration dictionary.
+    args
+        The command line arguments.
+    """
     if args.autoreload:
         config.embed.autoreload = True
 
@@ -334,6 +410,19 @@ def update_embed_config(config: Dict, args: Namespace):
 
 
 def load_yaml(file_path: str):
+    """
+    Load a yaml file.
+
+    Parameters
+    ----------
+    file_path
+        The path to the yaml file.
+
+    Returns
+    -------
+    dict
+        The loaded yaml file.
+    """
     try:
         with open(file_path, "r") as file:
             return yaml.safe_load(file) or {}
@@ -342,12 +431,35 @@ def load_yaml(file_path: str):
 
 
 def get_manim_dir():
+    """
+    Get the manim directory.
+
+    Returns
+    -------
+    str
+        The path to the manim directory.
+    """
     manimlib_module = importlib.import_module("manimlib")
     manimlib_dir = os.path.dirname(inspect.getabsfile(manimlib_module))
     return os.path.abspath(os.path.join(manimlib_dir, ".."))
 
 
 def get_resolution_from_args(args: Optional[Namespace], resolution_options: dict) -> Optional[tuple[int, int]]:
+    """
+    Get the resolution from the command line arguments.
+
+    Parameters
+    ----------
+    args
+        The command line arguments.
+    resolution_options
+        The resolution options.
+
+    Returns
+    -------
+    tuple[int, int] | None
+        The resolution.
+    """
     if args.resolution:
         return tuple(map(int, args.resolution.split("x")))
     if args.low_quality:
@@ -362,6 +474,19 @@ def get_resolution_from_args(args: Optional[Namespace], resolution_options: dict
 
 
 def get_file_ext(args: Namespace) -> str:
+    """
+    Get the file extension from the command line arguments.
+
+    Parameters
+    ----------
+    args
+        The command line arguments.
+
+    Returns
+    -------
+    str
+        The file extension.
+    """
     if args.transparent:
         file_ext = ".mov"
     elif args.gif:
@@ -372,6 +497,19 @@ def get_file_ext(args: Namespace) -> str:
 
 
 def get_animations_numbers(args: Namespace) -> tuple[int | None, int | None]:
+    """
+    Get the animation numbers from the command line arguments.
+
+    Parameters
+    ----------
+    args
+        The command line arguments.
+
+    Returns
+    -------
+    tuple[int | None, int | None]
+        The animation numbers.
+    """
     stan = args.start_at_animation_number
     if stan is None:
         return (None, None)
@@ -382,6 +520,21 @@ def get_animations_numbers(args: Namespace) -> tuple[int | None, int | None]:
 
 
 def get_output_directory(args: Namespace, config: Dict) -> str:
+    """
+    Get the output directory from the command line arguments.
+
+    Parameters
+    ----------
+    args
+        The command line arguments.
+    config
+        The configuration dictionary.
+
+    Returns
+    -------
+    str
+        The output directory.
+    """
     dir_config = config.directories
     out_dir = args.video_dir or dir_config.output
     if dir_config.mirror_module_path and args.file:

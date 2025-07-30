@@ -46,6 +46,22 @@ DEFAULT_Y_RANGE = (-4.0, 4.0, 1.0)
 
 
 def full_range_specifier(range_args):
+    """
+    This function is used to convert a list of 2 numbers into a list of 3.
+    This is used to specify the range of a graph. The first two numbers are
+    the start and end of the range, and the third number is the step size.
+    If the step size is not specified, it defaults to 1.
+
+    Parameters
+    ----------
+    range_args
+        A list of 2 or 3 numbers.
+
+    Returns
+    -------
+    list
+        A list of 3 numbers.
+    """
     if len(range_args) == 2:
         return (*range_args, 1)
     return range_args
@@ -63,6 +79,18 @@ class CoordinateSystem(ABC):
         y_range: RangeSpecifier = DEFAULT_Y_RANGE,
         num_sampled_graph_points_per_tick: int = 5,
     ):
+        """
+        Initializes the coordinate system.
+
+        Parameters
+        ----------
+        x_range
+            The range of the x-axis.
+        y_range
+            The range of the y-axis.
+        num_sampled_graph_points_per_tick
+            The number of points to sample per tick when graphing.
+        """
         self.x_range = full_range_specifier(x_range)
         self.y_range = full_range_specifier(y_range)
         self.num_sampled_graph_points_per_tick = num_sampled_graph_points_per_tick
@@ -433,6 +461,31 @@ class CoordinateSystem(ABC):
 
 
 class Axes(VGroup, CoordinateSystem):
+    """
+    A class that represents a set of axes.
+
+    This class is used to create a set of axes, which can be used to graph
+    functions.
+
+    Parameters
+    ----------
+    x_range
+        The range of the x-axis.
+    y_range
+        The range of the y-axis.
+    axis_config
+        A dictionary of configuration options for the axes.
+    x_axis_config
+        A dictionary of configuration options for the x-axis.
+    y_axis_config
+        A dictionary of configuration options for the y-axis.
+    height
+        The height of the axes.
+    width
+        The width of the axes.
+    unit_size
+        The size of a unit on the axes.
+    """
     default_axis_config: dict = dict()
     default_x_axis_config: dict = dict()
     default_y_axis_config: dict = dict(line_to_number_direction=LEFT)
@@ -527,6 +580,27 @@ class Axes(VGroup, CoordinateSystem):
 
 
 class ThreeDAxes(Axes):
+    """
+    A class that represents a set of 3D axes.
+
+    This class is used to create a set of 3D axes, which can be used to graph
+    3D functions.
+
+    Parameters
+    ----------
+    x_range
+        The range of the x-axis.
+    y_range
+        The range of the y-axis.
+    z_range
+        The range of the z-axis.
+    z_axis_config
+        A dictionary of configuration options for the z-axis.
+    z_normal
+        The normal vector to the z-axis.
+    depth
+        The depth of the axes.
+    """
     dimension: int = 3
     default_z_axis_config: dict = dict()
 
@@ -616,6 +690,28 @@ class ThreeDAxes(Axes):
 
 
 class NumberPlane(Axes):
+    """
+    A class that represents a number plane.
+
+    This class is used to create a number plane, which is a set of axes with
+    grid lines.
+
+    Parameters
+    ----------
+    x_range
+        The range of the x-axis.
+    y_range
+        The range of the y-axis.
+    background_line_style
+        A dictionary of configuration options for the background lines.
+    faded_line_style
+        A dictionary of configuration options for the faded lines.
+    faded_line_ratio
+        The ratio of faded lines to background lines.
+    make_smooth_after_applying_functions
+        A boolean indicating whether to make the lines smooth after applying
+        functions.
+    """
     default_axis_config: dict = dict(
         stroke_color=DEFAULT_MOBJECT_COLOR,
         stroke_width=2,
@@ -726,6 +822,12 @@ class NumberPlane(Axes):
 
 
 class ComplexPlane(NumberPlane):
+    """
+    A class that represents a complex plane.
+
+    This class is used to create a complex plane, which is a number plane
+    that is used to graph complex numbers.
+    """
     def number_to_point(self, number: complex | float) -> Vect3:
         number = complex(number)
         return self.coords_to_point(number.real, number.imag)
@@ -773,3 +875,68 @@ class ComplexPlane(NumberPlane):
             self.coordinate_labels.add(number_mob)
         self.add(self.coordinate_labels)
         return self
+
+
+class PolarPlane(Axes):
+    """
+    A class that represents a polar plane.
+
+    This class is used to create a polar plane, which is a set of axes with
+    circular grid lines.
+
+    Parameters
+    ----------
+    radius_max
+        The maximum radius of the polar plane.
+    radius_step
+        The step size of the radius.
+    azimuth_step
+        The step size of the azimuth.
+    azimuth_units
+        The units of the azimuth.
+    azimuth_direction
+        The direction of the azimuth.
+    """
+    def __init__(
+        self,
+        radius_max: float = FRAME_X_RADIUS,
+        radius_step: float = 1.0,
+        azimuth_step: int = 12,
+        azimuth_units: str = "deg",
+        azimuth_direction: str = "CCW",
+        **kwargs,
+    ):
+        kwargs["x_range"] = (0, radius_max, radius_step)
+        kwargs["y_range"] = (0, 360 if azimuth_units == "deg" else 2 * PI, azimuth_step)
+        super().__init__(**kwargs)
+        self.azimuth_units = azimuth_units
+        self.azimuth_direction = azimuth_direction
+        self.remove(self.y_axis)
+        self.y_axis = self.get_circular_grid_lines()
+        self.add(self.y_axis)
+
+    def get_axes(self) -> VGroup:
+        return VGroup(self.x_axis, self.y_axis)
+
+    def get_circular_grid_lines(self) -> VGroup:
+        x_axis = self.get_x_axis()
+        x_min, x_max, x_step = self.x_range
+        radii = np.arange(x_step, x_max + x_step, x_step)
+        
+        circles = VGroup()
+        for radius in radii:
+            circle = Circle(radius=x_axis.n2p(radius)[0])
+            circle.set_stroke(self.background_line_style["stroke_color"], 1)
+            circles.add(circle)
+        return circles
+
+    def get_coordinate_labels(self, radius_labels: list[float] | None = None, azimuth_labels: list[float] | None = None) -> VGroup:
+        if radius_labels is None:
+            radius_labels = self.x_axis.get_tick_range()[1:]
+        if azimuth_labels is None:
+            azimuth_labels = self.y_axis.get_tick_range()[1:]
+        
+        radius_mobs = self.x_axis.add_numbers(radius_labels)
+        azimuth_mobs = self.y_axis.add_numbers(azimuth_labels)
+        self.coordinate_labels = VGroup(radius_mobs, azimuth_mobs)
+        return self.coordinate_labels

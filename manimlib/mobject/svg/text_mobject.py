@@ -40,6 +40,7 @@ DEFAULT_CANVAS_HEIGHT = 16384
 
 # Temporary handler
 class _Alignment:
+    """A class to handle text alignment."""
     VAL_DICT = {
         "LEFT": 0,
         "CENTER": 1,
@@ -59,6 +60,7 @@ def markup_to_svg(
     alignment: str = "CENTER",
     line_width: float | None = None,
 ) -> str:
+    """Converts a markup string to an SVG string."""
     validate_error = manimpango.MarkupUtils.validate(markup_str)
     if validate_error:
         raise ValueError(
@@ -101,6 +103,7 @@ def markup_to_svg(
 
 
 class MarkupText(StringMobject):
+    """A mobject that can be used to display text with markup."""
     # See https://docs.gtk.org/Pango/pango_markup.html
     MARKUP_TAGS = {
         "b": {"font_weight": "bold"},
@@ -386,6 +389,7 @@ class MarkupText(StringMobject):
 
 
 class Text(MarkupText):
+    """A mobject that can be used to display text."""
     def __init__(
         self,
         text: str,
@@ -424,6 +428,7 @@ class Text(MarkupText):
 
 
 class Code(MarkupText):
+    """A mobject that displays code with syntax highlighting."""
     def __init__(
         self,
         code: str,

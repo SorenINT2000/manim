@@ -28,6 +28,10 @@ CLOSED_THRESHOLD = 0.001
 def bezier(
     points: Sequence[float | FloatArray] | VectNArray
 ) -> Callable[[float], float | FloatArray]:
+    """
+    Given a sequence of points, returns a function that takes in a float from 0 to 1, and returns a point on the
+    bezier curve defined by those points.
+    """
     if len(points) == 0:
         raise Exception("bezier cannot be calld on an empty list")
 
@@ -77,6 +81,10 @@ def partial_quadratic_bezier_points(
     a: float,
     b: float
 ) -> list[VectN]:
+    """
+    Given a sequence of 3 points defining a quadratic bezier curve, and two numbers 0<=a<b<=1, returns a list of 3
+    points defining the portion of the original bezier curve on the interval [a, b].
+    """
     if a == 1:
         return 3 * [points[-1]]
 
@@ -95,6 +103,9 @@ def partial_quadratic_bezier_points(
 
 
 def interpolate(start: Scalable, end: Scalable, alpha: float | VectN) -> Scalable:
+    """
+    Linear interpolation between two points.
+    """
     try:
         return (1 - alpha) * start + alpha * end
     except TypeError:
@@ -110,6 +121,9 @@ def outer_interpolate(
     end: Scalable,
     alpha: Scalable,
 ) -> np.ndarray:
+    """
+    Outer interpolation between two points.
+    """
     result = np.outer(1 - alpha, start) + np.outer(alpha, end)
     return result.reshape((*np.shape(alpha), *np.shape(start)))
 
@@ -121,6 +135,9 @@ def set_array_by_interpolation(
     alpha: float,
     interp_func: Callable[[np.ndarray, np.ndarray, float], np.ndarray] = interpolate
 ) -> np.ndarray:
+    """
+    Sets an array by interpolating between two other arrays.
+    """
     arr[:] = interp_func(arr1, arr2, alpha)
     return arr
 
@@ -151,10 +168,16 @@ def integer_interpolate(
 
 
 def mid(start: Scalable, end: Scalable) -> Scalable:
+    """
+    Returns the midpoint between two points.
+    """
     return (start + end) / 2.0
 
 
 def inverse_interpolate(start: Scalable, end: Scalable, value: Scalable) -> np.ndarray:
+    """
+    Inverse linear interpolation.
+    """
     return np.true_divide(value - start, end - start)
 
 
@@ -165,6 +188,9 @@ def match_interpolate(
     old_end: Scalable,
     old_value: Scalable
 ) -> Scalable:
+    """
+    Interpolates a value from an old range to a new range.
+    """
     return interpolate(
         new_start, new_end,
         inverse_interpolate(old_start, old_end, old_value)
@@ -172,6 +198,9 @@ def match_interpolate(
 
 
 def quadratic_bezier_points_for_arc(angle: float, n_components: int = 8):
+    """
+    Returns a list of points for a quadratic bezier curve that approximates an arc of a given angle.
+    """
     n_points = 2 * n_components + 1
     angles = np.linspace(0, angle, n_points)
     points = np.array([np.cos(angles), np.sin(angles), np.zeros(n_points)]).T
@@ -257,6 +286,9 @@ def smooth_quadratic_path(anchors: Vect3Array) -> Vect3Array:
 def get_smooth_cubic_bezier_handle_points(
     points: Sequence[VectN] | VectNArray
 ) -> tuple[FloatArray, FloatArray]:
+    """
+    Returns a pair of lists of handle points for a smooth cubic bezier curve through a sequence of points.
+    """
     points = np.array(points)
     num_handles = len(points) - 1
     dim = points.shape[1]
@@ -335,6 +367,9 @@ def diag_to_matrix(
 
 
 def is_closed(points: FloatArray) -> bool:
+    """
+    Returns true if the last point is close to the first point.
+    """
     return np.allclose(points[0], points[-1])
 
 
@@ -346,6 +381,14 @@ def get_quadratic_approximation_of_cubic(
     h1: FloatArray,
     a1: FloatArray
 ) -> FloatArray:
+    """
+    Returns a quadratic approximation of a cubic bezier curve.
+
+    The approximation is a list of 5 points, where the first, third and
+    fifth points are the start, middle and end of the curve, and the
+    second and fourth points are the handles of the two quadratic bezier
+    curves that approximate the cubic.
+    """
     a0 = np.array(a0, ndmin=2)
     h0 = np.array(h0, ndmin=2)
     h1 = np.array(h1, ndmin=2)
@@ -415,6 +458,9 @@ def get_quadratic_approximation_of_cubic(
 def get_smooth_quadratic_bezier_path_through(
     points: Sequence[VectN]
 ) -> np.ndarray:
+    """
+    Returns a smooth quadratic bezier path through the given points.
+    """
     # TODO
     h0, h1 = get_smooth_cubic_bezier_handle_points(points)
     a0 = points[:-1]

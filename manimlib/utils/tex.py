@@ -8,6 +8,9 @@ from manimlib.utils.tex_to_symbol_count import TEX_TO_SYMBOL_COUNT
 
 @lru_cache
 def num_tex_symbols(tex: str) -> int:
+    """
+    Computes the number of symbols in a tex string.
+    """
     tex = remove_tex_environments(tex)
     commands_pattern = r"""
         (?P<sqrt>\\sqrt\[[0-9]+\])|    # Special sqrt with number
@@ -34,6 +37,9 @@ def num_tex_symbols(tex: str) -> int:
 
 
 def remove_tex_environments(tex: str) -> str:
+    """
+    Removes tex environments from a tex string.
+    """
     # Handle \phantom{...} with any content
     tex = re.sub(r"\\phantom\{[^}]*\}", "", tex)
     # Handle other environment commands

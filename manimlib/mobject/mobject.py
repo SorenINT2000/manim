@@ -61,12 +61,53 @@ if TYPE_CHECKING:
     Updater = Union[TimeBasedUpdater, NonTimeUpdater]
 
 
-class Mobject(object):
+class Mobject(metaclass=ConvertToOpenGL):
     """
-    Mathematical Object
+    The base class for all objects that can be displayed on the screen.
+
+    This class provides a wide range of methods for manipulating the object's
+    position, orientation, and appearance, as well as for managing its
+    relationship with other objects in the scene.
+
+    Parameters
+    ----------
+    name
+        The name of the mobject.
+    dim
+        The dimension of the mobject.
+    z_index_group
+        The z-index group of the mobject.
+    submobjects
+        A list of submobjects of the mobject.
+    updaters
+        A list of updaters for the mobject.
+    background_image
+        The background image of the mobject.
+    shader_folder
+        The path to the folder containing the shader's source code.
+    render_primitive
+        The ModernGL render primitive to use.
+    color
+        The color of the mobject.
+    opacity
+        The opacity of the mobject.
+    stroke_width
+        The stroke width of the mobject.
+    stroke_color
+        The stroke color of the mobject.
+    stroke_opacity
+        The opacity of the stroke color.
+    fill_color
+        The fill color of the mobject.
+    fill_opacity
+        The opacity of the fill color.
+    shader_uniforms
+        A dictionary of uniforms that are specific to the mobject being
+        rendered.
     """
+    is_deleted: bool = False
+    shader_folder: str | None = None
     dim: int = 3
-    shader_folder: str = ""
     render_primitive: int = moderngl.TRIANGLE_STRIP
     # Must match in attributes of vert shader
     data_dtype: np.dtype = np.dtype([
@@ -2167,6 +2208,17 @@ class Mobject(object):
 
 
 class Group(Mobject, Generic[SubmobjectType]):
+    """
+    A mobject that groups together other mobjects.
+
+    This class is used to group together multiple mobjects so that they can be
+    manipulated as a single object.
+
+    Parameters
+    ----------
+    mobjects
+        A list of mobjects to be grouped together.
+    """
     def __init__(self, *mobjects: SubmobjectType | Iterable[SubmobjectType], **kwargs):
         super().__init__(**kwargs)
         self._ingest_args(*mobjects)
@@ -2191,17 +2243,20 @@ class Group(Mobject, Generic[SubmobjectType]):
 
 
 class Point(Mobject):
-    def __init__(
-        self,
-        location: Vect3 = ORIGIN,
-        artificial_width: float = 1e-6,
-        artificial_height: float = 1e-6,
-        **kwargs
-    ):
-        self.artificial_width = artificial_width
-        self.artificial_height = artificial_height
+    """
+    A mobject that represents a single point.
+
+    This class is used to create a mobject that represents a single point in
+    space.
+
+    Parameters
+    ----------
+    location
+        The location of the point.
+    """
+    def __init__(self, location: np.ndarray = ORIGIN, **kwargs):
         super().__init__(**kwargs)
-        self.set_location(location)
+        self.set_points(np.array([location]))
 
     def get_width(self) -> float:
         return self.artificial_width
@@ -2220,11 +2275,22 @@ class Point(Mobject):
         return self
 
 
-class _AnimationBuilder:
+class _AnimationBuilder(object):
+    """
+    A class that builds animations.
+
+    This class is used to build animations by chaining together animation
+    methods.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be animated.
+    """
     def __init__(self, mobject: Mobject):
         self.mobject = mobject
-        self.overridden_animation = None
         self.mobject.generate_target()
+        self.overridden_animation = None
         self.is_chaining = False
         self.methods: list[Callable] = []
         self.anim_args = {}
@@ -2302,6 +2368,23 @@ class _AnimationBuilder:
 
 
 def override_animate(method):
+    """
+    This decorator is used to override the default animation for a method.
+
+    This decorator is used to override the default animation for a method.
+    When the decorated method is called, it will be animated using the
+    animation method that is passed to the decorator.
+
+    Parameters
+    ----------
+    method
+        The method to be decorated.
+
+    Returns
+    -------
+    function
+        The decorated method.
+    """
     def decorator(animation_method):
         method._override_animate = animation_method
         return animation_method
@@ -2309,9 +2392,21 @@ def override_animate(method):
     return decorator
 
 
-class _UpdaterBuilder:
+class _UpdaterBuilder(object):
+    """
+    A class that builds updaters.
+
+    This class is used to build updaters by chaining together updater
+    methods.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be updated.
+    """
     def __init__(self, mobject: Mobject):
         self.mobject = mobject
+        self.method_dict: dict[Any, Any] = dict()
 
     def __getattr__(self, method_name: str):
         def add_updater(*method_args, **method_kwargs):
@@ -2322,9 +2417,21 @@ class _UpdaterBuilder:
         return add_updater
 
 
-class _FunctionalUpdaterBuilder:
+class _FunctionalUpdaterBuilder(object):
+    """
+    A class that builds functional updaters.
+
+    This class is used to build functional updaters by chaining together
+    updater methods.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be updated.
+    """
     def __init__(self, mobject: Mobject):
         self.mobject = mobject
+        self.calls: list[Any] = []
 
     def __getattr__(self, method_name: str):
         def add_updater(*method_args, **method_kwargs):

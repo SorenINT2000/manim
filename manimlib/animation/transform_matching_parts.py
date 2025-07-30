@@ -19,6 +19,30 @@ if TYPE_CHECKING:
 
 
 class TransformMatchingParts(AnimationGroup):
+    """
+    Animates the transformation of matching parts of two mobjects.
+
+    This animation transforms the matching parts of two mobjects into each
+    other, while fading out the mismatched parts of the source mobject and
+    fading in the mismatched parts of the target mobject.
+
+    Parameters
+    ----------
+    source
+        The source mobject.
+    target
+        The target mobject.
+    matched_pairs
+        A list of pairs of matching parts of the source and target mobjects.
+    match_animation
+        The animation to use for the matching parts.
+    mismatch_animation
+        The animation to use for the mismatched parts.
+    run_time
+        The duration of the animation.
+    lag_ratio
+        The time lag between the start of each animation.
+    """
     def __init__(
         self,
         source: Mobject,
@@ -116,11 +140,21 @@ class TransformMatchingParts(AnimationGroup):
 
 
 class TransformMatchingShapes(TransformMatchingParts):
-    """Alias for TransformMatchingParts"""
+    """
+    Animates the transformation of matching shapes of two mobjects.
+
+    This animation is an alias for `TransformMatchingParts`.
+    """
     pass
 
 
 class TransformMatchingStrings(TransformMatchingParts):
+    """
+    Animates the transformation of matching strings of two mobjects.
+
+    This animation is a specialization of `TransformMatchingParts` that
+    is used to transform matching strings of two mobjects.
+    """
     def __init__(
         self,
         source: StringMobject,
@@ -187,5 +221,9 @@ class TransformMatchingStrings(TransformMatchingParts):
 
 
 class TransformMatchingTex(TransformMatchingStrings):
-    """Alias for TransformMatchingStrings"""
+    """
+    Animates the transformation of matching TeX strings of two mobjects.
+
+    This animation is an alias for `TransformMatchingStrings`.
+    """
     pass

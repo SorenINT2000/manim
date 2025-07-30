@@ -30,12 +30,28 @@ if TYPE_CHECKING:
     T = TypeVar("T")
 
 
-#### Delete these two ###
 def get_vectorized_rgb_gradient_function(
     min_value: T,
     max_value: T,
     color_map: str
 ) -> Callable[[VectN], Vect3Array]:
+    """
+    This function returns a vectorized function that returns a color based on a value.
+
+    Parameters
+    ----------
+    min_value
+        The minimum value of the range.
+    max_value
+        The maximum value of the range.
+    color_map
+        The color map to use.
+
+    Returns
+    -------
+    Callable[[VectN], Vect3Array]
+        A function that takes a value and returns a color.
+    """
     rgbs = np.array(get_colormap_list(color_map))
 
     def func(values):
@@ -59,12 +75,47 @@ def get_rgb_gradient_function(
     max_value: T,
     color_map: str
 ) -> Callable[[float], Vect3]:
+    """
+    This function returns a function that returns a color based on a value.
+
+    Parameters
+    ----------
+    min_value
+        The minimum value of the range.
+    max_value
+        The maximum value of the range.
+    color_map
+        The color map to use.
+
+    Returns
+    -------
+    Callable[[float], Vect3]
+        A function that takes a value and returns a color.
+    """
     vectorized_func = get_vectorized_rgb_gradient_function(min_value, max_value, color_map)
     return lambda value: vectorized_func(np.array([value]))[0]
-####
 
 
 def ode_solution_points(function, state0, time, dt=0.01):
+    """
+    This function returns the points of the solution to an ODE.
+
+    Parameters
+    ----------
+    function
+        The function to be solved.
+    state0
+        The initial state of the system.
+    time
+        The time to solve the ODE for.
+    dt
+        The time step to use.
+
+    Returns
+    -------
+    np.ndarray
+        The points of the solution.
+    """
     solution = solve_ivp(
         lambda t, state: function(state),
         t_span=(0, time),
@@ -78,6 +129,21 @@ def move_along_vector_field(
     mobject: Mobject,
     func: Callable[[Vect3], Vect3]
 ) -> Mobject:
+    """
+    This function moves a mobject along a vector field.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be moved.
+    func
+        The vector field function.
+
+    Returns
+    -------
+    Mobject
+        The mobject.
+    """
     mobject.add_updater(
         lambda m, dt: m.shift(
             func(m.get_center()) * dt
@@ -90,6 +156,21 @@ def move_submobjects_along_vector_field(
     mobject: Mobject,
     func: Callable[[Vect3], Vect3]
 ) -> Mobject:
+    """
+    This function moves the submobjects of a mobject along a vector field.
+
+    Parameters
+    ----------
+    mobject
+        The mobject whose submobjects are to be moved.
+    func
+        The vector field function.
+
+    Returns
+    -------
+    Mobject
+        The mobject.
+    """
     def apply_nudge(mob, dt):
         for submob in mob:
             x, y = submob.get_center()[:2]
@@ -105,6 +186,23 @@ def move_points_along_vector_field(
     func: Callable[[float, float], Iterable[float]],
     coordinate_system: CoordinateSystem
 ) -> Mobject:
+    """
+    This function moves the points of a mobject along a vector field.
+
+    Parameters
+    ----------
+    mobject
+        The mobject whose points are to be moved.
+    func
+        The vector field function.
+    coordinate_system
+        The coordinate system to use.
+
+    Returns
+    -------
+    Mobject
+        The mobject.
+    """
     cs = coordinate_system
     origin = cs.get_origin()
 
@@ -120,6 +218,21 @@ def get_sample_coords(
     coordinate_system: CoordinateSystem,
     density: float = 1.0
 ) -> it.product[tuple[Vect3, ...]]:
+    """
+    This function returns a set of sample coordinates from a coordinate system.
+
+    Parameters
+    ----------
+    coordinate_system
+        The coordinate system to sample from.
+    density
+        The density of the sampling.
+
+    Returns
+    -------
+    it.product[tuple[Vect3, ...]]
+        The sample coordinates.
+    """
     ranges = []
     for range_args in coordinate_system.get_all_ranges():
         _min, _max, step = range_args
@@ -129,6 +242,19 @@ def get_sample_coords(
 
 
 def vectorize(pointwise_function: Callable[[Tuple], Tuple]):
+    """
+    This function vectorizes a pointwise function.
+
+    Parameters
+    ----------
+    pointwise_function
+        The function to be vectorized.
+
+    Returns
+    -------
+    Callable[[VectArray], VectArray]
+        The vectorized function.
+    """
     def v_func(coords_array: VectArray) -> VectArray:
         return np.array([pointwise_function(*coords) for coords in coords_array])
 
@@ -139,6 +265,9 @@ def vectorize(pointwise_function: Callable[[Tuple], Tuple]):
 
 
 class VectorField(VMobject):
+    """
+    A mobject that displays a vector field.
+    """
     def __init__(
         self,
         # Vectorized function: Takes in an array of coordinates, returns an array of outputs.
@@ -314,6 +443,9 @@ class VectorField(VMobject):
 
 
 class TimeVaryingVectorField(VectorField):
+    """
+    A vector field that varies with time.
+    """
     def __init__(
         self,
         # Takes in an array of points and a float for time
@@ -335,6 +467,9 @@ class TimeVaryingVectorField(VectorField):
 
 
 class StreamLines(VGroup):
+    """
+    A mobject that displays the stream lines of a vector field.
+    """
     def __init__(
         self,
         func: Callable[[VectArray], VectArray],
@@ -444,6 +579,9 @@ class StreamLines(VGroup):
 
 
 class AnimatedStreamLines(VGroup):
+    """
+    A mobject that displays animated stream lines of a vector field.
+    """
     def __init__(
         self,
         stream_lines: StreamLines,

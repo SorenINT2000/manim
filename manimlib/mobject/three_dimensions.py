@@ -29,6 +29,9 @@ if TYPE_CHECKING:
 
 
 class SurfaceMesh(VGroup):
+    """
+    A mesh of a surface.
+    """
     def __init__(
         self,
         uv_surface: Surface,
@@ -91,6 +94,9 @@ class SurfaceMesh(VGroup):
 # 3D shapes
 
 class Sphere(Surface):
+    """
+    A sphere.
+    """
     def __init__(
         self,
         u_range: Tuple[float, float] = (0, TAU),
@@ -123,6 +129,9 @@ class Sphere(Surface):
 
 
 class Torus(Surface):
+    """
+    A torus.
+    """
     def __init__(
         self,
         u_range: Tuple[float, float] = (0, TAU),
@@ -145,6 +154,9 @@ class Torus(Surface):
 
 
 class Cylinder(Surface):
+    """
+    A cylinder.
+    """
     def __init__(
         self,
         u_range: Tuple[float, float] = (0, TAU),
@@ -176,6 +188,9 @@ class Cylinder(Surface):
 
 
 class Cone(Cylinder):
+    """
+    A cone.
+    """
     def __init__(
         self,
         u_range: Tuple[float, float] = (0, TAU),
@@ -190,6 +205,9 @@ class Cone(Cylinder):
 
 
 class Line3D(Cylinder):
+    """
+    A 3D line.
+    """
     def __init__(
         self,
         start: Vect3,
@@ -210,6 +228,9 @@ class Line3D(Cylinder):
 
 
 class Disk3D(Surface):
+    """
+    A 3D disk.
+    """
     def __init__(
         self,
         radius: float = 1,
@@ -235,6 +256,9 @@ class Disk3D(Surface):
 
 
 class Square3D(Surface):
+    """
+    A 3D square.
+    """
     def __init__(
         self,
         side_length: float = 2.0,
@@ -256,6 +280,9 @@ class Square3D(Surface):
 
 
 def square_to_cube_faces(square: T) -> list[T]:
+    """
+    Converts a square to a list of 6 squares that form a cube.
+    """
     radius = square.get_height() / 2
     square.move_to(radius * OUT)
     result = [square.copy()]
@@ -268,6 +295,9 @@ def square_to_cube_faces(square: T) -> list[T]:
 
 
 class Cube(SGroup):
+    """
+    A cube.
+    """
     def __init__(
         self,
         color: ManimColor = BLUE,
@@ -288,6 +318,9 @@ class Cube(SGroup):
 
 
 class Prism(Cube):
+    """
+    A prism.
+    """
     def __init__(
         self,
         width: float = 3.0,
@@ -301,6 +334,9 @@ class Prism(Cube):
 
 
 class VGroup3D(VGroup):
+    """
+    A 3D VGroup.
+    """
     def __init__(
         self,
         *vmobjects: VMobject,
@@ -317,6 +353,9 @@ class VGroup3D(VGroup):
 
 
 class VCube(VGroup3D):
+    """
+    A vectorized cube.
+    """
     def __init__(
         self,
         side_length: float = 2.0,
@@ -336,6 +375,9 @@ class VCube(VGroup3D):
 
 
 class VPrism(VCube):
+    """
+    A vectorized prism.
+    """
     def __init__(
         self,
         width: float = 3.0,
@@ -349,6 +391,9 @@ class VPrism(VCube):
 
 
 class Dodecahedron(VGroup3D):
+    """
+    A dodecahedron.
+    """
     def __init__(
         self,
         fill_color: ManimColor = BLUE_E,
@@ -396,6 +441,9 @@ class Dodecahedron(VGroup3D):
 
 
 class Prismify(VGroup3D):
+    """
+    A prism made from a VMobject.
+    """
     def __init__(self, vmobject, depth=1.0, direction=IN, **kwargs):
         # At the moment, this assume stright edges
         vect = depth * direction

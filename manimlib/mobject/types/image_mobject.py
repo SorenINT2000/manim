@@ -19,6 +19,11 @@ if TYPE_CHECKING:
 
 
 class ImageMobject(Mobject):
+    """
+    An image mobject.
+
+    This mobject is used to display an image.
+    """
     shader_folder: str = "image"
     data_dtype: Sequence[Tuple[str, type, Tuple[int]]] = [
         ('point', np.float32, (3,)),

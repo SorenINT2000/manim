@@ -32,6 +32,33 @@ if TYPE_CHECKING:
 
 
 class ShaderWrapper(object):
+    """
+    A class that wraps an OpenGL shader program.
+
+    This class manages the shader's source code, its uniforms, its textures,
+    and its vertex data. It also provides methods for rendering and for
+    updating the shader's state.
+
+    Parameters
+    ----------
+    ctx
+        The ModernGL context.
+    vert_data
+        A numpy array containing the vertex data for the shader.
+    shader_folder
+        The path to the folder containing the shader's source code.
+    mobject_uniforms
+        A dictionary of uniforms that are specific to the mobject being
+        rendered.
+    texture_paths
+        A dictionary mapping texture names to their file paths.
+    depth_test
+        A boolean indicating whether depth testing should be enabled.
+    render_primitive
+        The ModernGL render primitive to use.
+    code_replacements
+        A dictionary of code replacements to apply to the shader source.
+    """
     def __init__(
         self,
         ctx: moderngl.context.Context,
@@ -218,6 +245,20 @@ class ShaderWrapper(object):
 
 
 class VShaderWrapper(ShaderWrapper):
+    """
+    A shader wrapper for vectorized mobjects.
+
+    This class is a subclass of `ShaderWrapper` and is specialized for
+    rendering `VMobject` instances. It manages the shader programs for
+    the stroke, fill, and depth components of the mobject, and it also
+    handles the rendering of the mobject's fill and stroke.
+
+    Parameters
+    ----------
+    stroke_behind
+        A boolean indicating whether the stroke should be rendered behind
+        the fill.
+    """
     def __init__(
         self,
         ctx: moderngl.context.Context,

@@ -63,4 +63,7 @@ class ExponentialValueTracker(ValueTracker):
 
 
 class ComplexValueTracker(ValueTracker):
+    """
+    A ValueTracker that stores a complex number.
+    """
     value_type: type = np.complex128
