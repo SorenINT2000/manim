@@ -21,6 +21,27 @@ if TYPE_CHECKING:
 
 
 class CameraFrame(Mobject):
+    """
+    A class that represents the frame of the camera.
+
+    This class is a subclass of `Mobject` and is responsible for managing the
+    camera's position, orientation, and field of view. It also provides
+    methods for converting between the camera's coordinate system and the
+    scene's coordinate system.
+
+    Parameters
+    ----------
+    frame_shape
+        The shape of the camera frame.
+    center_point
+        The center point of the camera frame.
+    fovy
+        The field of view in the y direction.
+    euler_axes
+        The axes to use for Euler angles.
+    z_index
+        The z-index of the camera frame.
+    """
     def __init__(
         self,
         frame_shape: tuple[float, float] = FRAME_SHAPE,

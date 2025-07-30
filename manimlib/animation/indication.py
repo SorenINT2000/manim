@@ -39,6 +39,26 @@ if TYPE_CHECKING:
 
 
 class FocusOn(Transform):
+    """
+    Animates the focusing of the camera on a specific point or mobject.
+
+    This animation shows the camera zooming in on a specified point or mobject,
+    while fading out the rest of the scene.
+
+    Parameters
+    ----------
+    focus_point
+        The point or mobject to focus on.
+    opacity
+        The opacity of the faded-out scene.
+    color
+        The color of the faded-out scene.
+    run_time
+        The duration of the animation.
+    remover
+        A boolean indicating whether the focus effect should be removed
+        after the animation is complete.
+    """
     def __init__(
         self,
         focus_point: np.ndarray | Mobject,
@@ -71,6 +91,23 @@ class FocusOn(Transform):
 
 
 class Indicate(Transform):
+    """
+    Animates the indication of a mobject by changing its scale and color.
+
+    This animation is used to draw attention to a mobject by temporarily
+    changing its scale and color.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be indicated.
+    scale_factor
+        The factor by which to scale the mobject.
+    color
+        The color to which to change the mobject.
+    rate_func
+        The rate function to use for the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -91,6 +128,29 @@ class Indicate(Transform):
 
 
 class Flash(AnimationGroup):
+    """
+    Animates a flash of lines emanating from a point.
+
+    This animation is used to create a "flash" effect, where a number of
+    lines emanate from a specified point and then disappear.
+
+    Parameters
+    ----------
+    point
+        The point from which the flash emanates.
+    color
+        The color of the flash lines.
+    line_length
+        The length of the flash lines.
+    num_lines
+        The number of lines in the flash.
+    flash_radius
+        The radius of the flash.
+    line_stroke_width
+        The stroke width of the flash lines.
+    run_time
+        The duration of the animation.
+    """
     def __init__(
         self,
         point: np.ndarray | Mobject,
@@ -140,6 +200,28 @@ class Flash(AnimationGroup):
 
 
 class CircleIndicate(Transform):
+    """
+    Animates the indication of a mobject by drawing a circle around it.
+
+    This animation is used to draw attention to a mobject by drawing a
+    circle around it that appears and then disappears.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be indicated.
+    scale_factor
+        The factor by which to scale the circle.
+    rate_func
+        The rate function to use for the animation.
+    stroke_color
+        The color of the circle's stroke.
+    stroke_width
+        The width of the circle's stroke.
+    remover
+        A boolean indicating whether the circle should be removed after the
+        animation is complete.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -163,6 +245,22 @@ class CircleIndicate(Transform):
 
 
 class ShowPassingFlash(ShowPartial):
+    """
+    Animates the showing of a passing flash of a mobject.
+
+    This animation shows a "flash" of the mobject that passes over it, as if
+    it were being scanned.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be flashed.
+    time_width
+        The width of the flash in time.
+    remover
+        A boolean indicating whether the flash should be removed after the
+        animation is complete.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -192,6 +290,24 @@ class ShowPassingFlash(ShowPartial):
 
 
 class VShowPassingFlash(Animation):
+    """
+    Animates the showing of a passing flash of a vectorized mobject.
+
+    This animation is a specialization of `ShowPassingFlash` for vectorized
+    mobjects.
+
+    Parameters
+    ----------
+    vmobject
+        The vectorized mobject to be flashed.
+    time_width
+        The width of the flash in time.
+    taper_width
+        The width of the taper at the ends of the flash.
+    remover
+        A boolean indicating whether the flash should be removed after the
+        animation is complete.
+    """
     def __init__(
         self,
         vmobject: VMobject,
@@ -253,6 +369,29 @@ class VShowPassingFlash(Animation):
 
 
 class FlashAround(VShowPassingFlash):
+    """
+    Animates a flash around a mobject.
+
+    This animation is a specialization of `VShowPassingFlash` that creates a
+    flash that surrounds the mobject.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be flashed around.
+    time_width
+        The width of the flash in time.
+    taper_width
+        The width of the taper at the ends of the flash.
+    stroke_width
+        The stroke width of the flash.
+    color
+        The color of the flash.
+    buff
+        The buffer between the mobject and the flash.
+    n_inserted_curves
+        The number of curves to insert into the flash path.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -277,16 +416,48 @@ class FlashAround(VShowPassingFlash):
 
 
 class FlashUnder(FlashAround):
+    """
+    Animates a flash under a mobject.
+
+    This animation is a specialization of `FlashAround` that creates a flash
+    that appears under the mobject.
+    """
     def get_path(self, mobject: Mobject, buff: float) -> Underline:
         return Underline(mobject, buff=buff, stretch_factor=1.0)
 
 
 class ShowCreationThenDestruction(ShowPassingFlash):
+    """
+    Animates the creation and then destruction of a mobject.
+
+    This animation shows the mobject being created and then destroyed, as if
+    it were a temporary object.
+
+    Parameters
+    ----------
+    vmobject
+        The vectorized mobject to be created and destroyed.
+    time_width
+        The width of the creation and destruction animations in time.
+    """
     def __init__(self, vmobject: VMobject, time_width: float = 2.0, **kwargs):
         super().__init__(vmobject, time_width=time_width, **kwargs)
 
 
 class ShowCreationThenFadeOut(Succession):
+    """
+    Animates the creation and then fading out of a mobject.
+
+    This animation shows the mobject being created and then fading out.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be created and faded out.
+    remover
+        A boolean indicating whether the mobject should be removed from the
+        scene after the animation is complete.
+    """
     def __init__(self, mobject: Mobject, remover: bool = True, **kwargs):
         super().__init__(
             ShowCreation(mobject),
@@ -297,6 +468,24 @@ class ShowCreationThenFadeOut(Succession):
 
 
 class AnimationOnSurroundingRectangle(AnimationGroup):
+    """
+    Animates a surrounding rectangle of a mobject.
+
+    This animation is a base class for animations that involve a surrounding
+    rectangle. It creates a rectangle that surrounds the mobject and then
+    applies an animation to it.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be surrounded.
+    stroke_width
+        The stroke width of the surrounding rectangle.
+    stroke_color
+        The color of the surrounding rectangle's stroke.
+    buff
+        The buffer between the mobject and the surrounding rectangle.
+    """
     RectAnimationType: type = Animation
 
     def __init__(
@@ -318,18 +507,55 @@ class AnimationOnSurroundingRectangle(AnimationGroup):
 
 
 class ShowPassingFlashAround(AnimationOnSurroundingRectangle):
+    """
+    Animates a passing flash around a mobject.
+
+    This animation is a specialization of `AnimationOnSurroundingRectangle`
+    that creates a passing flash animation on the surrounding rectangle.
+    """
     RectAnimationType = ShowPassingFlash
 
 
 class ShowCreationThenDestructionAround(AnimationOnSurroundingRectangle):
+    """
+    Animates the creation and then destruction of a surrounding rectangle.
+
+    This animation is a specialization of `AnimationOnSurroundingRectangle`
+    that creates a creation and then destruction animation on the
+    surrounding rectangle.
+    """
     RectAnimationType = ShowCreationThenDestruction
 
 
 class ShowCreationThenFadeAround(AnimationOnSurroundingRectangle):
+    """
+    Animates the creation and then fading out of a surrounding rectangle.
+
+    This animation is a specialization of `AnimationOnSurroundingRectangle`
+    that creates a creation and then fading out animation on the
+    surrounding rectangle.
+    """
     RectAnimationType = ShowCreationThenFadeOut
 
 
 class ApplyWave(Homotopy):
+    """
+    Animates the application of a wave to a mobject.
+
+    This animation shows a wave passing over the mobject, as if it were
+    being deformed by a wave.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be waved.
+    direction
+        The direction of the wave.
+    amplitude
+        The amplitude of the wave.
+    run_time
+        The duration of the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -353,6 +579,29 @@ class ApplyWave(Homotopy):
 
 
 class WiggleOutThenIn(Animation):
+    """
+    Animates the wiggling of a mobject out and then in.
+
+    This animation shows the mobject wiggling out and then back in, as if it
+    were being shaken.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be wiggled.
+    scale_value
+        The factor by which to scale the mobject during the wiggle.
+    rotation_angle
+        The angle by which to rotate the mobject during the wiggle.
+    n_wiggles
+        The number of wiggles.
+    scale_about_point
+        The point about which to scale the mobject.
+    rotate_about_point
+        The point about which to rotate the mobject.
+    run_time
+        The duration of the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -395,6 +644,19 @@ class WiggleOutThenIn(Animation):
 
 
 class TurnInsideOut(Transform):
+    """
+    Animates the turning inside out of a mobject.
+
+    This animation shows the mobject turning inside out, as if it were being
+    inverted.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be turned inside out.
+    path_arc
+        The arc of the path along which the mobject is turned.
+    """
     def __init__(self, mobject: Mobject, path_arc: float = 90 * DEG, **kwargs):
         super().__init__(mobject, path_arc=path_arc, **kwargs)
 
@@ -406,6 +668,25 @@ class TurnInsideOut(Transform):
 
 
 class FlashyFadeIn(AnimationGroup):
+    """
+    Animates a flashy fade-in of a vectorized mobject.
+
+    This animation shows a flashy fade-in of the vectorized mobject, where
+    the outline of the mobject is shown with a passing flash while the
+    mobject itself fades in.
+
+    Parameters
+    ----------
+    vmobject
+        The vectorized mobject to be faded in.
+    stroke_width
+        The stroke width of the outline.
+    fade_lag
+        The time lag between the fade-in of the outline and the fade-in of
+        the mobject.
+    time_width
+        The width of the passing flash in time.
+    """
     def __init__(self,
         vmobject: VMobject,
         stroke_width: float = 2.0,

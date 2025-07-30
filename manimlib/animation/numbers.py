@@ -12,6 +12,22 @@ if TYPE_CHECKING:
 
 
 class ChangingDecimal(Animation):
+    """
+    Animates the changing of a decimal number.
+
+    This animation shows a decimal number changing its value over time,
+    according to a specified update function.
+
+    Parameters
+    ----------
+    decimal_mob
+        The decimal number to be animated.
+    number_update_func
+        The function that updates the value of the decimal number.
+    suspend_mobject_updating
+        A boolean indicating whether the mobject's updaters should be
+        suspended during the animation.
+    """
     def __init__(
         self,
         decimal_mob: DecimalNumber,
@@ -35,6 +51,19 @@ class ChangingDecimal(Animation):
 
 
 class ChangeDecimalToValue(ChangingDecimal):
+    """
+    Animates the changing of a decimal number to a specific value.
+
+    This animation is a specialization of `ChangingDecimal` that changes the
+    value of a decimal number to a specified target value.
+
+    Parameters
+    ----------
+    decimal_mob
+        The decimal number to be animated.
+    target_number
+        The target value of the decimal number.
+    """
     def __init__(
         self,
         decimal_mob: DecimalNumber,
@@ -50,6 +79,19 @@ class ChangeDecimalToValue(ChangingDecimal):
 
 
 class CountInFrom(ChangingDecimal):
+    """
+    Animates the counting in of a decimal number from a source value.
+
+    This animation is a specialization of `ChangingDecimal` that shows a
+    decimal number counting in from a specified source value.
+
+    Parameters
+    ----------
+    decimal_mob
+        The decimal number to be animated.
+    source_number
+        The source value of the decimal number.
+    """
     def __init__(
         self,
         decimal_mob: DecimalNumber,

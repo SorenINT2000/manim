@@ -26,6 +26,9 @@ EPSILON = 0.0001
 
 
 class SampleSpace(Rectangle):
+    """
+    A rectangle representing a sample space.
+    """
     def __init__(
         self,
         width: float = 3,
@@ -194,6 +197,9 @@ class SampleSpace(Rectangle):
 
 
 class BarChart(VGroup):
+    """
+    A bar chart.
+    """
     def __init__(
         self,
         values: Iterable[float],

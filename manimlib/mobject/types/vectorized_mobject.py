@@ -56,6 +56,11 @@ if TYPE_CHECKING:
 
 
 class VMobject(Mobject):
+    """
+    A vectorized mobject.
+
+    This is a mobject that is defined by a set of points and curves.
+    """
     data_dtype: np.dtype = np.dtype([
         ('point', np.float32, (3,)),
         ('stroke_rgba', np.float32, (4,)),
@@ -1294,6 +1299,9 @@ class VMobject(Mobject):
 
 
 class VGroup(Group, VMobject, Generic[SubVmobjectType]):
+    """
+    A group of vectorized mobjects.
+    """
     def __init__(self, *vmobjects: SubVmobjectType | Iterable[SubVmobjectType], **kwargs):
         super().__init__(**kwargs)
         if any(isinstance(vmob, Mobject) and not isinstance(vmob, VMobject) for vmob in vmobjects):
@@ -1312,6 +1320,9 @@ class VGroup(Group, VMobject, Generic[SubVmobjectType]):
 
 
 class VectorizedPoint(Point, VMobject):
+    """
+    A vectorized point.
+    """
     def __init__(
         self,
         location: np.ndarray = ORIGIN,
@@ -1332,6 +1343,9 @@ class VectorizedPoint(Point, VMobject):
 
 
 class CurvesAsSubmobjects(VGroup):
+    """
+    A VGroup of the curves of a VMobject.
+    """
     def __init__(self, vmobject: VMobject, **kwargs):
         super().__init__(**kwargs)
         for tup in vmobject.get_bezier_tuples():
@@ -1342,6 +1356,9 @@ class CurvesAsSubmobjects(VGroup):
 
 
 class DashedVMobject(VMobject):
+    """
+    A dashed VMobject.
+    """
     def __init__(
         self,
         vmobject: VMobject,
@@ -1373,6 +1390,9 @@ class DashedVMobject(VMobject):
 
 
 class VHighlight(VGroup):
+    """
+    A highlight for a VMobject.
+    """
     def __init__(
         self,
         vmobject: VMobject,

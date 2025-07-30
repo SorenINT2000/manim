@@ -24,6 +24,12 @@ DEFAULT_BUFF_RATIO = 0.5
 
 
 class DotCloud(PMobject):
+    """
+    A cloud of dots.
+
+    This mobject is used to create a cloud of dots. The dots can be
+    colored and sized individually.
+    """
     shader_folder: str = "true_dot"
     render_primitive: int = moderngl.POINTS
     data_dtype: Sequence[Tuple[str, type, Tuple[int]]] = [
@@ -158,11 +164,17 @@ class DotCloud(PMobject):
 
 
 class TrueDot(DotCloud):
+    """
+    A single dot.
+    """
     def __init__(self, center: Vect3 = ORIGIN, **kwargs):
         super().__init__(points=np.array([center]), **kwargs)
 
 
 class GlowDots(DotCloud):
+    """
+    A cloud of glowing dots.
+    """
     def __init__(
         self,
         points: Vect3Array = NULL_POINTS,
@@ -181,5 +193,8 @@ class GlowDots(DotCloud):
 
 
 class GlowDot(GlowDots):
+    """
+    A single glowing dot.
+    """
     def __init__(self, center: Vect3 = ORIGIN, **kwargs):
         super().__init__(points=np.array([center]), **kwargs)

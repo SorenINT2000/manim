@@ -31,10 +31,16 @@ def list_update(l1: Iterable[T], l2: Iterable[T]) -> list[T]:
 
 
 def list_difference_update(l1: Iterable[T], l2: Iterable[T]) -> list[T]:
+    """
+    Returns the list difference of two lists.
+    """
     return [e for e in l1 if e not in l2]
 
 
 def adjacent_n_tuples(objects: Sequence[T], n: int) -> zip[tuple[T, ...]]:
+    """
+    Returns a zip object of n-tuples of adjacent elements.
+    """
     return zip(*[
         [*objects[k:], *objects[:k]]
         for k in range(n)
@@ -42,6 +48,9 @@ def adjacent_n_tuples(objects: Sequence[T], n: int) -> zip[tuple[T, ...]]:
 
 
 def adjacent_pairs(objects: Sequence[T]) -> zip[tuple[T, T]]:
+    """
+    Returns a zip object of pairs of adjacent elements.
+    """
     return adjacent_n_tuples(objects, 2)
 
 
@@ -76,6 +85,9 @@ def batch_by_property(
 
 
 def listify(obj: object) -> list:
+    """
+    Converts an object to a list.
+    """
     if isinstance(obj, str):
         return [obj]
     try:
@@ -85,18 +97,27 @@ def listify(obj: object) -> list:
 
 
 def shuffled(iterable: Iterable) -> list:
+    """
+    Returns a shuffled list of the elements in an iterable.
+    """
     as_list = list(iterable)
     random.shuffle(as_list)
     return as_list
 
 
 def resize_array(nparray: np.ndarray, length: int) -> np.ndarray:
+    """
+    Resizes a numpy array.
+    """
     if len(nparray) == length:
         return nparray
     return np.resize(nparray, (length, *nparray.shape[1:]))
 
 
 def resize_preserving_order(nparray: np.ndarray, length: int) -> np.ndarray:
+    """
+    Resizes a numpy array while preserving the order of the elements.
+    """
     if len(nparray) == 0:
         return np.resize(nparray, length)
     if len(nparray) == length:
@@ -106,6 +127,9 @@ def resize_preserving_order(nparray: np.ndarray, length: int) -> np.ndarray:
 
 
 def resize_with_interpolation(nparray: np.ndarray, length: int) -> np.ndarray:
+    """
+    Resizes a numpy array with interpolation.
+    """
     if len(nparray) == length:
         return nparray
     if len(nparray) == 1 or array_is_constant(nparray):
@@ -124,6 +148,9 @@ def make_even(
     iterable_1: Sequence[T],
     iterable_2: Sequence[S]
 ) -> tuple[Sequence[T], Sequence[S]]:
+    """
+    Makes two iterables the same length.
+    """
     len1 = len(iterable_1)
     len2 = len(iterable_2)
     if len1 == len2:
@@ -136,10 +163,16 @@ def make_even(
 
 
 def arrays_match(arr1: np.ndarray, arr2: np.ndarray) -> bool:
+    """
+    Checks if two numpy arrays match.
+    """
     return arr1.shape == arr2.shape and (arr1 == arr2).all()
 
 
 def array_is_constant(arr: np.ndarray) -> bool:
+    """
+    Checks if a numpy array is constant.
+    """
     return len(arr) > 0 and (arr == arr[0]).all()
 
 
@@ -156,6 +189,9 @@ def cartesian_product(*arrays: np.ndarray):
 
 
 def hash_obj(obj: object) -> int:
+    """
+    Returns a hash of an object.
+    """
     if isinstance(obj, dict):
         return hash(tuple(sorted([
             (hash_obj(k), hash_obj(v)) for k, v in obj.items()

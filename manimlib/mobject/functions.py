@@ -15,6 +15,24 @@ if TYPE_CHECKING:
 
 
 class ParametricCurve(VMobject):
+    """
+    A parametric curve.
+
+    This class is used to create a parametric curve.
+
+    Parameters
+    ----------
+    t_func
+        The function that defines the curve.
+    t_range
+        The range of the parameter `t`.
+    epsilon
+        The epsilon value used to avoid discontinuities.
+    discontinuities
+        A list of discontinuities of the function.
+    use_smoothing
+        A boolean indicating whether to use smoothing.
+    """
     def __init__(
         self,
         t_func: Callable[[float], Sequence[float] | Vect3],
@@ -68,6 +86,20 @@ class ParametricCurve(VMobject):
 
 
 class FunctionGraph(ParametricCurve):
+    """
+a function graph.
+
+    This class is used to create a function graph.
+
+    Parameters
+    ----------
+    function
+        The function to be graphed.
+    x_range
+        The range of the x-axis.
+    color
+        The color of the graph.
+    """
     def __init__(
         self,
         function: Callable[[float], float],
@@ -85,6 +117,28 @@ class FunctionGraph(ParametricCurve):
 
 
 class ImplicitFunction(VMobject):
+    """
+    An implicit function.
+
+    This class is used to create an implicit function.
+
+    Parameters
+    ----------
+    func
+        The function to be graphed.
+    x_range
+        The range of the x-axis.
+    y_range
+        The range of the y-axis.
+    min_depth
+        The minimum depth of the function.
+    max_quads
+        The maximum number of quads.
+    use_smoothing
+        A boolean indicating whether to use smoothing.
+    joint_type
+        The type of joint to use.
+    """
     def __init__(
         self,
         func: Callable[[float, float], float],

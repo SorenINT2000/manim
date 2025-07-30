@@ -15,6 +15,32 @@ if TYPE_CHECKING:
 
 
 class Rotating(Animation):
+    """
+    Animates the rotation of a mobject.
+
+    This animation shows a mobject rotating by a specified angle about a
+    specified axis.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be rotated.
+    angle
+        The angle of rotation.
+    axis
+        The axis of rotation.
+    about_point
+        The point about which to rotate the mobject.
+    about_edge
+        The edge about which to rotate the mobject.
+    run_time
+        The duration of the animation.
+    rate_func
+        The rate function to use for the animation.
+    suspend_mobject_updating
+        A boolean indicating whether the mobject's updaters should be
+        suspended during the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -56,6 +82,27 @@ class Rotating(Animation):
 
 
 class Rotate(Rotating):
+    """
+    Animates the rotation of a mobject by a specific angle.
+
+    This animation is a specialization of `Rotating` that rotates a mobject
+    by a specified angle.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be rotated.
+    angle
+        The angle of rotation.
+    axis
+        The axis of rotation.
+    run_time
+        The duration of the animation.
+    rate_func
+        The rate function to use for the animation.
+    about_edge
+        The edge about which to rotate the mobject.
+    """
     def __init__(
         self,
         mobject: Mobject,

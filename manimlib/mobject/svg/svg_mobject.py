@@ -32,10 +32,12 @@ PATH_TO_POINTS: dict[str, Vect3Array] = {}
 
 
 def _convert_point_to_3d(x: float, y: float) -> np.ndarray:
+    """Converts a 2D point to a 3D point."""
     return np.array([x, y, 0.0])
 
 
 class SVGMobject(VMobject):
+    """A vectorized mobject that is read from an SVG file."""
     file_name: str = ""
     height: float | None = 2.0
     width: float | None = None
@@ -298,6 +300,7 @@ class SVGMobject(VMobject):
 
 
 class VMobjectFromSVGPath(VMobject):
+    """A vectorized mobject that is read from an SVG path."""
     def __init__(
         self,
         path_obj: se.Path,

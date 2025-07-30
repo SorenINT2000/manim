@@ -46,6 +46,19 @@ class ShowPartial(Animation, ABC):
 
 
 class ShowCreation(ShowPartial):
+    """
+    Animates the creation of a mobject.
+
+    This animation shows the mobject being drawn on the screen, as if it were
+    being created in real time.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be created.
+    lag_ratio
+        The time lag between the creation of each submobject.
+    """
     def __init__(self, mobject: Mobject, lag_ratio: float = 1.0, **kwargs):
         super().__init__(mobject, lag_ratio=lag_ratio, **kwargs)
 
@@ -54,6 +67,25 @@ class ShowCreation(ShowPartial):
 
 
 class Uncreate(ShowCreation):
+    """
+    Animates the un-creation of a mobject.
+
+    This animation is the reverse of `ShowCreation`, and it shows the mobject
+    being erased from the screen.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be un-created.
+    rate_func
+        The rate function to use for the animation.
+    remover
+        A boolean indicating whether the mobject should be removed from the
+        scene after the animation is complete.
+    should_match_start
+        A boolean indicating whether the starting state of the mobject should
+        be matched to its state at the beginning of the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -72,6 +104,29 @@ class Uncreate(ShowCreation):
 
 
 class DrawBorderThenFill(Animation):
+    """
+    Animates the drawing of the border of a mobject, and then the filling of its interior.
+
+    This animation is used to create a "drawing" effect, where the border of
+    the mobject is drawn first, and then the interior is filled in.
+
+    Parameters
+    ----------
+    vmobject
+        The vectorized mobject to be animated.
+    run_time
+        The total run time of the animation.
+    rate_func
+        The rate function to use for the animation.
+    stroke_width
+        The width of the border stroke.
+    stroke_color
+        The color of the border stroke.
+    draw_border_animation_config
+        A dictionary of configuration options for the border drawing animation.
+    fill_animation_config
+        A dictionary of configuration options for the fill animation.
+    """
     def __init__(
         self,
         vmobject: VMobject,
@@ -142,6 +197,26 @@ class DrawBorderThenFill(Animation):
 
 
 class Write(DrawBorderThenFill):
+    """
+    Animates the writing of a mobject on the screen.
+
+    This animation is a specialization of `DrawBorderThenFill` that is used
+    to create a "writing" effect. It is particularly useful for animating
+    the appearance of text.
+
+    Parameters
+    ----------
+    vmobject
+        The vectorized mobject to be written.
+    run_time
+        The total run time of the animation.
+    lag_ratio
+        The time lag between the writing of each submobject.
+    rate_func
+        The rate function to use for the animation.
+    stroke_color
+        The color of the stroke used to write the mobject.
+    """
     def __init__(
         self,
         vmobject: VMobject,
@@ -175,6 +250,23 @@ class Write(DrawBorderThenFill):
 
 
 class ShowIncreasingSubsets(Animation):
+    """
+    Animates the showing of increasing subsets of a mobject.
+
+    This animation is used to reveal a mobject by showing an increasing
+    number of its submobjects over time.
+
+    Parameters
+    ----------
+    group
+        The mobject to be animated.
+    int_func
+        The function used to determine the number of submobjects to show at
+        each frame of the animation.
+    suspend_mobject_updating
+        A boolean indicating whether the mobject's updaters should be
+        suspended during the animation.
+    """
     def __init__(
         self,
         group: Mobject,
@@ -201,6 +293,20 @@ class ShowIncreasingSubsets(Animation):
 
 
 class ShowSubmobjectsOneByOne(ShowIncreasingSubsets):
+    """
+    Animates the showing of submobjects one by one.
+
+    This animation is a specialization of `ShowIncreasingSubsets` that reveals
+    the submobjects of a mobject one at a time.
+
+    Parameters
+    ----------
+    group
+        The mobject to be animated.
+    int_func
+        The function used to determine which submobject to show at each
+        frame of the animation.
+    """
     def __init__(
         self,
         group: Mobject,
@@ -218,6 +324,23 @@ class ShowSubmobjectsOneByOne(ShowIncreasingSubsets):
 
 
 class AddTextWordByWord(ShowIncreasingSubsets):
+    """
+    Animates the adding of text word by word.
+
+    This animation is used to reveal a string of text by adding one word at a
+    time.
+
+    Parameters
+    ----------
+    string_mobject
+        The string mobject to be animated.
+    time_per_word
+        The time to spend on each word.
+    run_time
+        The total run time of the animation.
+    rate_func
+        The rate function to use for the animation.
+    """
     def __init__(
         self,
         string_mobject: StringMobject,

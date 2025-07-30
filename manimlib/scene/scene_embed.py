@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 
 
 class InteractiveSceneEmbed:
+    """A class to embed an interactive IPython shell into a scene."""
     def __init__(self, scene: Scene):
         self.scene = scene
         self.checkpoint_manager = CheckpointManager()
@@ -160,6 +161,7 @@ class InteractiveSceneEmbed:
 
 
 class CheckpointManager:
+    """A class to manage checkpoints in a scene."""
     def __init__(self):
         self.checkpoint_states: dict[str, list[tuple[Mobject, Mobject]]] = dict()
 

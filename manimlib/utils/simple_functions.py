@@ -17,27 +17,45 @@ if TYPE_CHECKING:
 
 
 def sigmoid(x: float | FloatArray):
+    """
+    Sigmoid function.
+    """
     return 1.0 / (1 + np.exp(-x))
 
 
 @lru_cache(maxsize=10)
 def choose(n: int, k: int) -> int:
+    """
+    Computes n choose k.
+    """
     return math.comb(n, k)
 
 
 def gen_choose(n: int, r: int) -> int:
+    """
+    Computes n choose r.
+    """
     return int(np.prod(range(n, n - r, -1)) / math.factorial(r))
 
 
 def get_num_args(function: Callable) -> int:
+    """
+    Returns the number of arguments of a function.
+    """
     return function.__code__.co_argcount
 
 
 def get_parameters(function: Callable) -> Iterable[str]:
+    """
+    Returns the parameters of a function.
+    """
     return inspect.signature(function).parameters.keys()
 
 
 def clip(a: float, min_a: float, max_a: float) -> float:
+    """
+    Clips a value to a given range.
+    """
     if a < min_a:
         return min_a
     elif a > max_a:
@@ -46,6 +64,9 @@ def clip(a: float, min_a: float, max_a: float) -> float:
 
 
 def arr_clip(arr: np.ndarray, min_a: float, max_a: float) -> np.ndarray:
+    """
+    Clips an array to a given range.
+    """
     arr[arr < min_a] = min_a
     arr[arr > max_a] = max_a
     return arr
@@ -73,6 +94,9 @@ def binary_search(
     upper_bound: float,
     tolerance:float = 1e-4
 ) -> float | None:
+    """
+    Performs a binary search to find the input to a function that gives a certain target value.
+    """
     lh = lower_bound
     rh = upper_bound
     mh = (lh + rh) / 2
@@ -97,5 +121,8 @@ def binary_search(
 
 
 def hash_string(string: str, n_bytes=16) -> str:
+    """
+    Returns a hash of a string.
+    """
     hasher = hashlib.sha256(string.encode())
     return hasher.hexdigest()[:n_bytes]

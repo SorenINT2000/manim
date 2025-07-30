@@ -22,6 +22,25 @@ if TYPE_CHECKING:
 
 
 class Transform(Animation):
+    """
+    Animates the transformation of a mobject into a target mobject.
+
+    This animation transforms a mobject from its current state to the state
+    of a target mobject.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be transformed.
+    target_mobject
+        The target mobject of the transformation.
+    path_arc
+        The arc of the path along which the mobject is transformed.
+    path_arc_axis
+        The axis of the path arc.
+    path_func
+        The function that defines the path of the transformation.
+    """
     replace_mobject_with_target_in_scene: bool = False
 
     def __init__(
@@ -130,10 +149,22 @@ class Transform(Animation):
 
 
 class ReplacementTransform(Transform):
+    """
+    A transform that replaces the source mobject with the target mobject.
+
+    This animation is a specialization of `Transform` that replaces the
+    source mobject with the target mobject in the scene.
+    """
     replace_mobject_with_target_in_scene: bool = True
 
 
 class TransformFromCopy(Transform):
+    """
+    A transform that transforms a copy of the source mobject into the target mobject.
+
+    This animation is a specialization of `Transform` that transforms a copy
+    of the source mobject into the target mobject.
+    """
     replace_mobject_with_target_in_scene: bool = True
 
     def __init__(self, mobject: Mobject, target_mobject: Mobject, **kwargs):
@@ -141,6 +172,12 @@ class TransformFromCopy(Transform):
 
 
 class MoveToTarget(Transform):
+    """
+    Animates the movement of a mobject to its target.
+
+    This animation is a specialization of `Transform` that moves a mobject
+    to its target state.
+    """
     def __init__(self, mobject: Mobject, **kwargs):
         self.check_validity_of_input(mobject)
         super().__init__(mobject, mobject.target, **kwargs)
@@ -153,12 +190,24 @@ class MoveToTarget(Transform):
 
 
 class _MethodAnimation(MoveToTarget):
+    """
+    Animates the application of a method to a mobject.
+
+    This animation is a specialization of `MoveToTarget` that animates the
+    application of a method to a mobject.
+    """
     def __init__(self, mobject: Mobject, methods: list[Callable], **kwargs):
         self.methods = methods
         super().__init__(mobject, **kwargs)
 
 
 class ApplyMethod(Transform):
+    """
+    Animates the application of a method to a mobject.
+
+    This animation is a specialization of `Transform` that animates the
+    application of a method to a mobject.
+    """
     def __init__(self, method: Callable, *args, **kwargs):
         """
         method is a method of Mobject, *args are arguments for
@@ -196,6 +245,12 @@ class ApplyMethod(Transform):
 
 
 class ApplyPointwiseFunction(ApplyMethod):
+    """
+    Animates the application of a pointwise function to a mobject.
+
+    This animation is a specialization of `ApplyMethod` that animates the
+    application of a pointwise function to a mobject.
+    """
     def __init__(
         self,
         function: Callable[[np.ndarray], np.ndarray],
@@ -207,6 +262,12 @@ class ApplyPointwiseFunction(ApplyMethod):
 
 
 class ApplyPointwiseFunctionToCenter(Transform):
+    """
+    Animates the application of a pointwise function to the center of a mobject.
+
+    This animation is a specialization of `Transform` that animates the
+    application of a pointwise function to the center of a mobject.
+    """
     def __init__(
         self,
         function: Callable[[np.ndarray], np.ndarray],
@@ -221,6 +282,12 @@ class ApplyPointwiseFunctionToCenter(Transform):
 
 
 class FadeToColor(ApplyMethod):
+    """
+    Animates the fading of a mobject to a specific color.
+
+    This animation is a specialization of `ApplyMethod` that animates the
+    fading of a mobject to a specific color.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -231,6 +298,12 @@ class FadeToColor(ApplyMethod):
 
 
 class ScaleInPlace(ApplyMethod):
+    """
+    Animates the scaling of a mobject in place.
+
+    This animation is a specialization of `ApplyMethod` that animates the
+    scaling of a mobject in place.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -241,11 +314,23 @@ class ScaleInPlace(ApplyMethod):
 
 
 class ShrinkToCenter(ScaleInPlace):
+    """
+    Animates the shrinking of a mobject to its center.
+
+    This animation is a specialization of `ScaleInPlace` that animates the
+    shrinking of a mobject to its center.
+    """
     def __init__(self, mobject: Mobject, **kwargs):
         super().__init__(mobject, 0, **kwargs)
 
 
 class Restore(Transform):
+    """
+    Animates the restoration of a mobject to its saved state.
+
+    This animation is a specialization of `Transform` that animates the
+    restoration of a mobject to its saved state.
+    """
     def __init__(self, mobject: Mobject, **kwargs):
         if not hasattr(mobject, "saved_state") or mobject.saved_state is None:
             raise Exception("Trying to restore without having saved")
@@ -253,6 +338,12 @@ class Restore(Transform):
 
 
 class ApplyFunction(Transform):
+    """
+    Animates the application of a function to a mobject.
+
+    This animation is a specialization of `Transform` that animates the
+    application of a function to a mobject.
+    """
     def __init__(
         self,
         function: Callable[[Mobject], Mobject],
@@ -270,6 +361,12 @@ class ApplyFunction(Transform):
 
 
 class ApplyMatrix(ApplyPointwiseFunction):
+    """
+    Animates the application of a matrix to a mobject.
+
+    This animation is a specialization of `ApplyPointwiseFunction` that
+    animates the application of a matrix to a mobject.
+    """
     def __init__(
         self,
         matrix: npt.ArrayLike,
@@ -295,6 +392,12 @@ class ApplyMatrix(ApplyPointwiseFunction):
 
 
 class ApplyComplexFunction(ApplyMethod):
+    """
+    Animates the application of a complex function to a mobject.
+
+    This animation is a specialization of `ApplyMethod` that animates the
+    application of a complex function to a mobject.
+    """
     def __init__(
         self,
         function: Callable[[complex], complex],
@@ -314,6 +417,12 @@ class ApplyComplexFunction(ApplyMethod):
 
 
 class CyclicReplace(Transform):
+    """
+    Animates the cyclic replacement of a group of mobjects.
+
+    This animation is a specialization of `Transform` that animates the
+    cyclic replacement of a group of mobjects.
+    """
     def __init__(self, *mobjects: Mobject, path_arc=90 * DEG, **kwargs):
         super().__init__(Group(*mobjects), path_arc=path_arc, **kwargs)
 

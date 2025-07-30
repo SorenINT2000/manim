@@ -27,6 +27,9 @@ def cross(
     v2: Vect3 | List[float],
     out: np.ndarray | None = None
 ) -> Vect3 | Vect3Array:
+    """
+    Computes the cross product of two vectors.
+    """
     is2d = isinstance(v1, np.ndarray) and len(v1.shape) == 2
     if is2d:
         x1, y1, z1 = v1[:, 0], v1[:, 1], v1[:, 2]
@@ -45,10 +48,16 @@ def cross(
 
 
 def get_norm(vect: VectN | List[float]) -> float:
+    """
+    Computes the norm of a vector.
+    """
     return sum((x**2 for x in vect))**0.5
 
 
 def get_dist(vect1: VectN, vect2: VectN):
+    """
+    Computes the distance between two vectors.
+    """
     return get_norm(vect2 - vect1)
 
 
@@ -56,6 +65,9 @@ def normalize(
     vect: VectN | List[float],
     fall_back: VectN | List[float] | None = None
 ) -> VectN:
+    """
+    Normalizes a vector.
+    """
     norm = get_norm(vect)
     if norm > 0:
         return np.array(vect) / norm
@@ -99,16 +111,25 @@ def quaternion_from_angle_axis(
     angle: float,
     axis: Vect3,
 ) -> Vect4:
+    """
+    Computes a quaternion from an angle and an axis.
+    """
     return Rotation.from_rotvec(angle * normalize(axis)).as_quat()
 
 
 def angle_axis_from_quaternion(quat: Vect4) -> Tuple[float, Vect3]:
+    """
+    Computes an angle and an axis from a quaternion.
+    """
     rot_vec = Rotation.from_quat(quat).as_rotvec()
     norm = get_norm(rot_vec)
     return norm, rot_vec / norm
 
 
 def quaternion_conjugate(quaternion: Vect4) -> Vect4:
+    """
+    Computes the conjugate of a quaternion.
+    """
     result = np.array(quaternion)
     result[:3] *= -1
     return result
@@ -119,21 +140,33 @@ def rotate_vector(
     angle: float,
     axis: Vect3 = OUT
 ) -> Vect3:
+    """
+    Rotates a vector around an axis.
+    """
     rot = Rotation.from_rotvec(angle * normalize(axis))
     return np.dot(vector, rot.as_matrix().T)
 
 
 def rotate_vector_2d(vector: Vect2, angle: float) -> Vect2:
+    """
+    Rotates a 2D vector.
+    """
     # Use complex numbers...because why not
     z = complex(*vector) * np.exp(complex(0, angle))
     return np.array([z.real, z.imag])
 
 
 def rotation_matrix_transpose_from_quaternion(quat: Vect4) -> Matrix3x3:
+    """
+    Computes the transpose of a rotation matrix from a quaternion.
+    """
     return Rotation.from_quat(quat).as_matrix()
 
 
 def rotation_matrix_from_quaternion(quat: Vect4) -> Matrix3x3:
+    """
+    Computes a rotation matrix from a quaternion.
+    """
     return np.transpose(rotation_matrix_transpose_from_quaternion(quat))
 
 
@@ -145,10 +178,16 @@ def rotation_matrix(angle: float, axis: Vect3) -> Matrix3x3:
 
 
 def rotation_matrix_transpose(angle: float, axis: Vect3) -> Matrix3x3:
+    """
+    Computes the transpose of a rotation matrix.
+    """
     return rotation_matrix(angle, axis).T
 
 
 def rotation_about_z(angle: float) -> Matrix3x3:
+    """
+    Computes a rotation matrix around the z-axis.
+    """
     cos_a = math.cos(angle)
     sin_a = math.sin(angle)
     return np.array([
@@ -159,6 +198,9 @@ def rotation_about_z(angle: float) -> Matrix3x3:
 
 
 def rotation_between_vectors(v1: Vect3, v2: Vect3) -> Matrix3x3:
+    """
+    Computes the rotation matrix between two vectors.
+    """
     atol = 1e-8
     if get_norm(v1 - v2) < atol:
         return np.identity(3)
@@ -176,6 +218,9 @@ def rotation_between_vectors(v1: Vect3, v2: Vect3) -> Matrix3x3:
 
 
 def z_to_vector(vector: Vect3) -> Matrix3x3:
+    """
+    Computes the rotation matrix that rotates the z-axis to a given vector.
+    """
     return rotation_between_vectors(OUT, vector)
 
 
@@ -200,6 +245,9 @@ def angle_between_vectors(v1: VectN, v2: VectN) -> float:
 
 
 def project_along_vector(point: Vect3, vector: Vect3) -> Vect3:
+    """
+    Projects a point along a vector.
+    """
     matrix = np.identity(3) - np.outer(vector, vector)
     return np.dot(point, matrix.T)
 
@@ -208,6 +256,9 @@ def normalize_along_axis(
     array: np.ndarray,
     axis: int,
 ) -> np.ndarray:
+    """
+    Normalizes an array along a given axis.
+    """
     norms = np.sqrt((array * array).sum(axis))
     norms[norms == 0] = 1
     return array / norms[:, np.newaxis]
@@ -218,6 +269,9 @@ def get_unit_normal(
     v2: Vect3,
     tol: float = 1e-6
 ) -> Vect3:
+    """
+    Computes the unit normal of two vectors.
+    """
     v1 = normalize(v1)
     v2 = normalize(v2)
     cp = cross(v1, v2)
@@ -236,12 +290,18 @@ def get_unit_normal(
 
 
 def thick_diagonal(dim: int, thickness: int = 2) -> np.ndarray:
+    """
+    Computes a thick diagonal matrix.
+    """
     row_indices = np.arange(dim).repeat(dim).reshape((dim, dim))
     col_indices = np.transpose(row_indices)
     return (np.abs(row_indices - col_indices) < thickness).astype('uint8')
 
 
 def compass_directions(n: int = 4, start_vect: Vect3 = RIGHT) -> Vect3:
+    """
+    Computes n compass directions.
+    """
     angle = TAU / n
     return np.array([
         rotate_vector(start_vect, k * angle)
@@ -250,24 +310,39 @@ def compass_directions(n: int = 4, start_vect: Vect3 = RIGHT) -> Vect3:
 
 
 def complex_to_R3(complex_num: complex) -> Vect3:
+    """
+    Converts a complex number to a 3D vector.
+    """
     return np.array((complex_num.real, complex_num.imag, 0))
 
 
 def R3_to_complex(point: Vect3) -> complex:
+    """
+    Converts a 3D vector to a complex number.
+    """
     return complex(*point[:2])
 
 
 def complex_func_to_R3_func(complex_func: Callable[[complex], complex]) -> Callable[[Vect3], Vect3]:
+    """
+    Converts a complex function to a 3D function.
+    """
     def result(p: Vect3):
         return complex_to_R3(complex_func(R3_to_complex(p)))
     return result
 
 
 def center_of_mass(points: Sequence[Vect3]) -> Vect3:
+    """
+    Computes the center of mass of a sequence of points.
+    """
     return np.array(points).sum(0) / len(points)
 
 
 def midpoint(point1: VectN, point2: VectN) -> VectN:
+    """
+    Computes the midpoint of two points.
+    """
     return center_of_mass([point1, point2])
 
 
@@ -369,6 +444,9 @@ def get_closest_point_on_line(a: VectN, b: VectN, p: VectN) -> VectN:
 
 
 def get_winding_number(points: Sequence[Vect2 | Vect3]) -> float:
+    """
+    Computes the winding number of a sequence of points.
+    """
     total_angle = 0
     for p1, p2 in adjacent_pairs(points):
         d_angle = angle_of_vector(p2) - angle_of_vector(p1)
@@ -379,7 +457,11 @@ def get_winding_number(points: Sequence[Vect2 | Vect3]) -> float:
 
 ##
 
+
 def cross2d(a: Vect2 | Vect2Array, b: Vect2 | Vect2Array) -> Vect2 | Vect2Array:
+    """
+    Computes the 2D cross product of two vectors.
+    """
     if len(a.shape) == 2:
         return a[:, 0] * b[:, 1] - a[:, 1] * b[:, 0]
     else:
@@ -391,6 +473,9 @@ def tri_area(
     b: Vect2,
     c: Vect2
 ) -> float:
+    """
+    Computes the area of a triangle.
+    """
     return 0.5 * abs(
         a[0] * (b[1] - c[1]) +
         b[0] * (c[1] - a[1]) +
@@ -416,6 +501,9 @@ def is_inside_triangle(
 
 
 def norm_squared(v: VectN | List[float]) -> float:
+    """
+    Computes the squared norm of a vector.
+    """
     return sum(x * x for x in v)
 
 

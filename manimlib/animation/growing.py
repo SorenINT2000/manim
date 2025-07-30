@@ -13,6 +13,21 @@ if TYPE_CHECKING:
 
 
 class GrowFromPoint(Transform):
+    """
+    Animates the growing of a mobject from a point.
+
+    This animation shows the mobject growing from a specified point, as if it
+    were being created from that point.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be grown.
+    point
+        The point to grow the mobject from.
+    point_color
+        The color of the point.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -37,18 +52,53 @@ class GrowFromPoint(Transform):
 
 
 class GrowFromCenter(GrowFromPoint):
+    """
+    Animates the growing of a mobject from its center.
+
+    This animation is a specialization of `GrowFromPoint` that grows the
+    mobject from its center.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be grown.
+    """
     def __init__(self, mobject: Mobject, **kwargs):
         point = mobject.get_center()
         super().__init__(mobject, point, **kwargs)
 
 
 class GrowFromEdge(GrowFromPoint):
+    """
+    Animates the growing of a mobject from one of its edges.
+
+    This animation is a specialization of `GrowFromPoint` that grows the
+    mobject from a specified edge.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be grown.
+    edge
+        The edge to grow the mobject from.
+    """
     def __init__(self, mobject: Mobject, edge: np.ndarray, **kwargs):
         point = mobject.get_bounding_box_point(edge)
         super().__init__(mobject, point, **kwargs)
 
 
 class GrowArrow(GrowFromPoint):
+    """
+    Animates the growing of an arrow.
+
+    This animation is a specialization of `GrowFromPoint` that grows an
+    arrow from its start point.
+
+    Parameters
+    ----------
+    arrow
+        The arrow to be grown.
+    """
     def __init__(self, arrow: Arrow, **kwargs):
         point = arrow.get_start()
         super().__init__(arrow, point, **kwargs)

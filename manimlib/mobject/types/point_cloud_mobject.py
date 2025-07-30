@@ -15,6 +15,12 @@ if TYPE_CHECKING:
 
 
 class PMobject(Mobject):
+    """
+    A mobject made of points.
+
+    This is a mobject that is defined by a set of points. The points can
+    be colored and sized individually.
+    """
     def set_points(self, points: Vect3Array):
         if len(points) == 0:
             points = np.zeros((0, 3))
@@ -104,6 +110,9 @@ class PMobject(Mobject):
 
 
 class PGroup(PMobject):
+    """
+    A group of PMobjects.
+    """
     def __init__(self, *pmobs: PMobject, **kwargs):
         if not all([isinstance(m, PMobject) for m in pmobs]):
             raise Exception("All submobjects must be of type PMobject")

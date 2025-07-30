@@ -16,6 +16,30 @@ if TYPE_CHECKING:
 
 
 class AnimatedBoundary(VGroup):
+    """
+    A mobject that animates the boundary of another mobject.
+
+    This class is used to create an animation that shows the boundary of a
+    mobject being drawn and then faded out.
+
+    Parameters
+    ----------
+    vmobject
+        The mobject whose boundary is to be animated.
+    colors
+        A list of colors to use for the boundary.
+    max_stroke_width
+        The maximum stroke width of the boundary.
+    cycle_rate
+        The rate at which the boundary is cycled.
+    back_and_forth
+        A boolean indicating whether the boundary should be drawn back and
+        forth.
+    draw_rate_func
+        The rate function to use for drawing the boundary.
+    fade_rate_func
+        The rate function to use for fading out the boundary.
+    """
     def __init__(
         self,
         vmobject: VMobject,
@@ -96,6 +120,25 @@ class AnimatedBoundary(VGroup):
 
 
 class TracedPath(VMobject):
+    """
+    A mobject that traces the path of a point.
+
+    This class is used to create a mobject that traces the path of a point
+    over time.
+
+    Parameters
+    ----------
+    traced_point_func
+        A function that returns the point to be traced.
+    time_traced
+        The duration of the trace.
+    time_per_anchor
+        The time between each anchor point of the trace.
+    stroke_width
+        The stroke width of the trace.
+    stroke_color
+        The stroke color of the trace.
+    """
     def __init__(
         self,
         traced_point_func: Callable[[], Vect3],
@@ -141,6 +184,25 @@ class TracedPath(VMobject):
 
 
 class TracingTail(TracedPath):
+    """
+    A mobject that traces the path of a mobject with a tail.
+
+    This class is used to create a mobject that traces the path of a mobject
+    with a tail that fades out over time.
+
+    Parameters
+    ----------
+    mobject_or_func
+        The mobject or function whose path is to be traced.
+    time_traced
+        The duration of the trace.
+    stroke_width
+        The stroke width of the trace.
+    stroke_opacity
+        The stroke opacity of the trace.
+    stroke_color
+        The stroke color of the trace.
+    """
     def __init__(
         self,
         mobject_or_func: Mobject | Callable[[], np.ndarray],

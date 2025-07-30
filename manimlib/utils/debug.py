@@ -22,6 +22,9 @@ def index_labels(
     mobject: Mobject, 
     label_height: float = 0.15
 ) -> VGroup:
+    """
+    Creates a VGroup of labels for the submobjects of a mobject.
+    """
     labels = VGroup()
     for n, submob in enumerate(mobject):
         label = Integer(n)

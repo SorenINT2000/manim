@@ -23,6 +23,17 @@ if TYPE_CHECKING:
 
 @lru_cache()
 def char_to_cahced_mob(char: str, **text_config):
+    """
+    This function is used to cache mobjects that are used to represent
+    characters. This is used to speed up the creation of text mobjects.
+
+    Parameters
+    ----------
+    char
+        The character to be cached.
+    text_config
+        A dictionary of configuration options for the text mobject.
+    """
     if "\\" in char:
         # This is for when the "character" is a LaTeX command
         # like ^\circ or \dots
@@ -32,6 +43,13 @@ def char_to_cahced_mob(char: str, **text_config):
 
 
 class DecimalNumber(VMobject):
+    """
+    A mobject that displays a decimal number.
+
+    This class is used to create a mobject that displays a decimal number.
+    The number can be formatted in various ways, including with a specific
+    number of decimal places, with a sign, and with commas.
+    """
     def __init__(
         self,
         number: float | complex = 0,
@@ -218,6 +236,11 @@ class DecimalNumber(VMobject):
 
 
 class Integer(DecimalNumber):
+    """
+    A mobject that displays an integer.
+
+    This class is used to create a mobject that displays an integer.
+    """
     def __init__(
         self,
         number: int = 0,

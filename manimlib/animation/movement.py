@@ -15,6 +15,22 @@ if TYPE_CHECKING:
 
 
 class Homotopy(Animation):
+    """
+    Animates a mobject by applying a homotopy to it.
+
+    A homotopy is a function from (x, y, z, t) to (x', y', z'), where t is
+    time. This animation shows the mobject being deformed over time according
+    to the homotopy.
+
+    Parameters
+    ----------
+    homotopy
+        The homotopy to be applied to the mobject.
+    mobject
+        The mobject to be animated.
+    run_time
+        The duration of the animation.
+    """
     apply_function_config: dict = dict()
 
     def __init__(
@@ -50,10 +66,30 @@ class Homotopy(Animation):
 
 
 class SmoothedVectorizedHomotopy(Homotopy):
+    """
+    A homotopy that is smoothed.
+
+    This class is a specialization of `Homotopy` that applies a smoothing
+    function to the homotopy.
+    """
     apply_function_config: dict = dict(make_smooth=True)
 
 
 class ComplexHomotopy(Homotopy):
+    """
+    A homotopy that is defined by a complex function.
+
+    This class is a specialization of `Homotopy` that is defined by a
+    complex function from (z, t) to w, where z and w are complex numbers
+    and t is time.
+
+    Parameters
+    ----------
+    complex_homotopy
+        The complex homotopy to be applied to the mobject.
+    mobject
+        The mobject to be animated.
+    """
     def __init__(
         self,
         complex_homotopy: Callable[[complex, float], complex],
@@ -73,6 +109,29 @@ class ComplexHomotopy(Homotopy):
 
 
 class PhaseFlow(Animation):
+    """
+    Animates a mobject by applying a phase flow to it.
+
+    A phase flow is a function that describes the velocity of each point in
+    space. This animation shows the mobject being moved over time according
+    to the phase flow.
+
+    Parameters
+    ----------
+    function
+        The function that defines the phase flow.
+    mobject
+        The mobject to be animated.
+    virtual_time
+        The virtual time to use for the animation.
+    suspend_mobject_updating
+        A boolean indicating whether the mobject's updaters should be
+        suspended during the animation.
+    rate_func
+        The rate function to use for the animation.
+    run_time
+        The duration of the animation.
+    """
     def __init__(
         self,
         function: Callable[[np.ndarray], np.ndarray],
@@ -103,6 +162,21 @@ class PhaseFlow(Animation):
 
 
 class MoveAlongPath(Animation):
+    """
+    Animates a mobject moving along a path.
+
+    This animation shows a mobject moving along a specified path.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be moved.
+    path
+        The path along which the mobject should be moved.
+    suspend_mobject_updating
+        A boolean indicating whether the mobject's updaters should be
+        suspended during the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,

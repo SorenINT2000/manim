@@ -22,6 +22,9 @@ PROGRAM_UNIFORM_MIRRORS: dict[int, dict[str, float | tuple]] = dict()
 
 @lru_cache()
 def image_path_to_texture(path: str, ctx: moderngl.Context) -> moderngl.Texture:
+    """
+    Converts an image path to a texture.
+    """
     im = Image.open(path).convert("RGBA")
     return ctx.texture(
         size=im.size,
@@ -37,6 +40,9 @@ def get_shader_program(
         fragment_shader: Optional[str] = None,
         geometry_shader: Optional[str] = None,
 ) -> moderngl.Program:
+    """
+    Returns a shader program.
+    """
     return ctx.program(
         vertex_shader=vertex_shader,
         fragment_shader=fragment_shader,
@@ -78,6 +84,9 @@ def set_program_uniform(
 
 @lru_cache()
 def get_shader_code_from_file(filename: str) -> str | None:
+    """
+    Returns the code for a shader from a file.
+    """
     if not filename:
         return None
 
@@ -107,6 +116,9 @@ def get_shader_code_from_file(filename: str) -> str | None:
 
 
 def get_colormap_code(rgb_list: Sequence[float]) -> str:
+    """
+    Returns the code for a colormap.
+    """
     data = ",".join(
         "vec3({}, {}, {})".format(*rgb)
         for rgb in rgb_list

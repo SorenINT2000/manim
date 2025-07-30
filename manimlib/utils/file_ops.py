@@ -18,6 +18,9 @@ if TYPE_CHECKING:
 
 
 def guarantee_existence(path: str | Path) -> Path:
+    """
+    Guarantees the existence of a directory.
+    """
     path = Path(path)
     path.mkdir(parents=True, exist_ok=True)
     return path.absolute()
@@ -28,6 +31,9 @@ def find_file(
     directories: Iterable[str] | None = None,
     extensions: Iterable[str] | None = None
 ) -> Path:
+    """
+    Finds a file in a list of directories.
+    """
     # Check if this is a file online first, and if so, download
     # it to a temporary directory
     if validators.url(file_name):

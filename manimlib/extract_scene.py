@@ -20,12 +20,30 @@ if TYPE_CHECKING:
 
 
 class BlankScene(InteractiveScene):
+    """
+    A scene that does nothing but open an interactive shell.
+    """
     def construct(self):
         exec(manim_config.universal_import_line)
         self.embed()
 
 
 def is_child_scene(obj, module):
+    """
+    Check if an object is a child scene of a module.
+
+    Parameters
+    ----------
+    obj
+        The object to check.
+    module
+        The module to check against.
+
+    Returns
+    -------
+    bool
+        Whether the object is a child scene of the module.
+    """
     if not inspect.isclass(obj):
         return False
     if not issubclass(obj, Scene):
@@ -38,6 +56,19 @@ def is_child_scene(obj, module):
 
 
 def prompt_user_for_choice(scene_classes):
+    """
+    Prompt the user to select a scene.
+
+    Parameters
+    ----------
+    scene_classes
+        The scene classes to choose from.
+
+    Returns
+    -------
+    list
+        The selected scene classes.
+    """
     name_to_class = {}
     max_digits = len(str(len(scene_classes)))
     for idx, scene_class in enumerate(scene_classes, start=1):
@@ -79,6 +110,23 @@ def compute_total_frames(scene_class, scene_config):
 
 
 def scene_from_class(scene_class, scene_config: Dict, run_config: Dict):
+    """
+    Create a scene from a class.
+
+    Parameters
+    ----------
+    scene_class
+        The scene class.
+    scene_config
+        The scene configuration.
+    run_config
+        The run configuration.
+
+    Returns
+    -------
+    Scene
+        The created scene.
+    """
     fw_config = manim_config.file_writer
     if fw_config.write_to_movie and run_config.prerun:
         scene_config.file_writer_config.total_frames = compute_total_frames(scene_class, scene_config)
@@ -86,12 +134,39 @@ def scene_from_class(scene_class, scene_config: Dict, run_config: Dict):
 
 
 def note_missing_scenes(arg_names, module_names):
+    """
+    Note any missing scenes.
+
+    Parameters
+    ----------
+    arg_names
+        The argument names.
+    module_names
+        The module names.
+    """
     for name in arg_names:
         if name not in module_names:
             log.error(f"No scene named {name} found")
 
 
 def get_scenes_to_render(all_scene_classes: list, scene_config: Dict, run_config: Dict):
+    """
+    Get the scenes to render.
+
+    Parameters
+    ----------
+    all_scene_classes
+        All scene classes.
+    scene_config
+        The scene configuration.
+    run_config
+        The run configuration.
+
+    Returns
+    -------
+    list
+        The scenes to render.
+    """
     if run_config["write_all"] or len(all_scene_classes) == 1:
         classes_to_run = all_scene_classes
     else:
@@ -110,6 +185,19 @@ def get_scenes_to_render(all_scene_classes: list, scene_config: Dict, run_config
 
 
 def get_scene_classes(module: Optional[Module]):
+    """
+    Get the scene classes from a module.
+
+    Parameters
+    ----------
+    module
+        The module.
+
+    Returns
+    -------
+    list
+        The scene classes.
+    """
     if module is None:
         # If no module was passed in, just play the blank scene
         return [BlankScene]
@@ -179,6 +267,19 @@ def insert_embed_line_to_module(module: Module, run_config: Dict) -> None:
 
 
 def get_module(run_config: Dict) -> Module:
+    """
+    Get a module.
+
+    Parameters
+    ----------
+    run_config
+        The run configuration.
+
+    Returns
+    -------
+    Module
+        The module.
+    """
     module = ModuleLoader.get_module(run_config.file_name, run_config.is_reload)
     if run_config.embed_line:
         insert_embed_line_to_module(module, run_config)
@@ -186,6 +287,21 @@ def get_module(run_config: Dict) -> Module:
 
 
 def main(scene_config: Dict, run_config: Dict):
+    """
+    Main function for extracting scenes.
+
+    Parameters
+    ----------
+    scene_config
+        The scene configuration.
+    run_config
+        The run configuration.
+
+    Returns
+    -------
+    list
+        The extracted scenes.
+    """
     module = get_module(run_config)
     all_scene_classes = get_scene_classes(module)
     scenes = get_scenes_to_render(all_scene_classes, scene_config, run_config)

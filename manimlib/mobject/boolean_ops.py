@@ -10,6 +10,22 @@ from manimlib.mobject.types.vectorized_mobject import VMobject
 # Borrowed from https://github.com/ManimCommunity/manim/
 
 def _convert_vmobject_to_skia_path(vmobject: VMobject) -> pathops.Path:
+    """
+    Converts a VMobject to a Skia path.
+
+    This function converts a VMobject to a Skia path, which can be used for
+    boolean operations.
+
+    Parameters
+    ----------
+    vmobject
+        The VMobject to be converted.
+
+    Returns
+    -------
+    pathops.Path
+        The Skia path.
+    """
     path = pathops.Path()
     for submob in vmobject.family_members_with_points():
         for subpath in submob.get_subpaths():
@@ -27,6 +43,23 @@ def _convert_skia_path_to_vmobject(
     path: pathops.Path,
     vmobject: VMobject
 ) -> VMobject:
+    """
+    Converts a Skia path to a VMobject.
+
+    This function converts a Skia path to a VMobject.
+
+    Parameters
+    ----------
+    path
+        The Skia path to be converted.
+    vmobject
+        The VMobject to which the path is to be converted.
+
+    Returns
+    -------
+    VMobject
+        The VMobject.
+    """
     PathVerb = pathops.PathVerb
     current_path_start = np.array([0.0, 0.0, 0.0])
     for path_verb, points in path:
@@ -50,6 +83,17 @@ def _convert_skia_path_to_vmobject(
 
 
 class Union(VMobject):
+    """
+    A mobject that represents the union of two or more mobjects.
+
+    This class is used to create a mobject that is the union of two or more
+    mobjects.
+
+    Parameters
+    ----------
+    vmobjects
+        The mobjects to be united.
+    """
     def __init__(self, *vmobjects: VMobject, **kwargs):
         if len(vmobjects) < 2:
             raise ValueError("At least 2 mobjects needed for Union.")
@@ -64,6 +108,19 @@ class Union(VMobject):
 
 
 class Difference(VMobject):
+    """
+    A mobject that represents the difference of two mobjects.
+
+    This class is used to create a mobject that is the difference of two
+    mobjects.
+
+    Parameters
+    ----------
+    subject
+        The mobject to be subtracted from.
+    clip
+        The mobject to be subtracted.
+    """
     def __init__(self, subject: VMobject, clip: VMobject, **kwargs):
         super().__init__(**kwargs)
         outpen = pathops.Path()
@@ -76,6 +133,17 @@ class Difference(VMobject):
 
 
 class Intersection(VMobject):
+    """
+    A mobject that represents the intersection of two or more mobjects.
+
+    This class is used to create a mobject that is the intersection of two or
+    more mobjects.
+
+    Parameters
+    ----------
+    vmobjects
+        The mobjects to be intersected.
+    """
     def __init__(self, *vmobjects: VMobject, **kwargs):
         if len(vmobjects) < 2:
             raise ValueError("At least 2 mobjects needed for Intersection.")
@@ -99,6 +167,17 @@ class Intersection(VMobject):
 
 
 class Exclusion(VMobject):
+    """
+    A mobject that represents the exclusion of two or more mobjects.
+
+    This class is used to create a mobject that is the exclusion of two or
+    more mobjects.
+
+    Parameters
+    ----------
+    vmobjects
+        The mobjects to be excluded.
+    """
     def __init__(self, *vmobjects: VMobject, **kwargs):
         if len(vmobjects) < 2:
             raise ValueError("At least 2 mobjects needed for Exclusion.")

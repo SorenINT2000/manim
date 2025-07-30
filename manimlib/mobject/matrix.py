@@ -22,6 +22,12 @@ if TYPE_CHECKING:
 
 
 class Matrix(VMobject):
+    """
+    A mobject that displays a matrix.
+
+    This class is used to create a matrix mobject. The matrix can contain
+    numbers, Tex strings, or other mobjects.
+    """
     def __init__(
         self,
         matrix: GenericMatrixType,
@@ -213,6 +219,9 @@ class Matrix(VMobject):
 
 
 class DecimalMatrix(Matrix):
+    """
+    A matrix of decimal numbers.
+    """
     def __init__(
         self,
         matrix: FloatMatrixType,
@@ -235,6 +244,9 @@ class DecimalMatrix(Matrix):
 
 
 class IntegerMatrix(DecimalMatrix):
+    """
+    A matrix of integers.
+    """
     def __init__(
         self,
         matrix: FloatMatrixType,
@@ -246,6 +258,9 @@ class IntegerMatrix(DecimalMatrix):
 
 
 class TexMatrix(Matrix):
+    """
+    A matrix of Tex mobjects.
+    """
     def __init__(
         self,
         matrix: StringMatrixType,
@@ -260,6 +275,9 @@ class TexMatrix(Matrix):
 
 
 class MobjectMatrix(Matrix):
+    """
+    A matrix of mobjects.
+    """
     def __init__(
         self,
         group: VGroup,

@@ -18,12 +18,23 @@ if TYPE_CHECKING:
 
 
 def assert_is_mobject_method(method):
+    """
+    This function asserts that the passed method is a method of a Mobject
+    """
     assert inspect.ismethod(method)
     mobject = method.__self__
     assert isinstance(mobject, Mobject)
 
 
 def always(method, *args, **kwargs):
+    """
+    This function is used to apply a method to a mobject continuously
+
+    Parameters
+    ----------
+    method
+        The method to be applied to the mobject
+    """
     assert_is_mobject_method(method)
     mobject = method.__self__
     func = method.__func__
@@ -53,6 +64,14 @@ def f_always(method, *arg_generators, **kwargs):
 
 
 def always_redraw(func: Callable[..., Mobject], *args, **kwargs) -> Mobject:
+    """
+    This function is used to redraw a mobject continuously
+
+    Parameters
+    ----------
+    func
+        The function that returns the mobject to be redrawn
+    """
     mob = func(*args, **kwargs)
     mob.add_updater(lambda m: mob.become(func(*args, **kwargs)))
     return mob
@@ -63,6 +82,18 @@ def always_shift(
     direction: np.ndarray = RIGHT,
     rate: float = 0.1
 ) -> Mobject:
+    """
+    This function is used to shift a mobject continuously
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be shifted
+    direction
+        The direction in which the mobject is to be shifted
+    rate
+        The rate at which the mobject is to be shifted
+    """
     mobject.add_updater(
         lambda m, dt: m.shift(dt * rate * direction)
     )
@@ -74,6 +105,16 @@ def always_rotate(
     rate: float = 20 * DEG,
     **kwargs
 ) -> Mobject:
+    """
+    This function is used to rotate a mobject continuously
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be rotated
+    rate
+        The rate at which the mobject is to be rotated
+    """
     mobject.add_updater(
         lambda m, dt: m.rotate(dt * rate, **kwargs)
     )
@@ -118,6 +159,14 @@ def turn_animation_into_updater(
 
 
 def cycle_animation(animation: Animation, **kwargs) -> Mobject:
+    """
+    This function is used to cycle an animation continuously
+
+    Parameters
+    ----------
+    animation
+        The animation to be cycled
+    """
     return turn_animation_into_updater(
         animation, cycle=True, **kwargs
     )

@@ -10,6 +10,22 @@ if TYPE_CHECKING:
 
 
 class EventListener(object):
+    """
+    A class that listens for events.
+
+    This class is used to create event listeners. An event listener is a
+    callable object that is called when an event of a certain type occurs on
+    a certain mobject.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to listen for events on.
+    event_type
+        The type of event to listen for.
+    event_callback
+        The function to call when the event occurs.
+    """
     def __init__(
         self,
         mobject: Mobject,

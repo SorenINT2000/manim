@@ -203,7 +203,7 @@ class TipableVMobject(VMobject):
 
 
 class Arc(TipableVMobject):
-    '''
+    """
     Creates an arc.
     Parameters
     -----
@@ -213,6 +213,8 @@ class Arc(TipableVMobject):
         Angle subtended by the arc at its center in radians. (Angles are measured counter-clockwise)
     radius : float
         Radius of the arc
+    n_components : int
+        Number of components to use to draw the arc.
     arc_center : array_like
         Center of the arc
     Examples :
@@ -222,8 +224,7 @@ class Arc(TipableVMobject):
     -----
     out : Arc object
         An Arc object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         start_angle: float = 0,
@@ -273,7 +274,7 @@ class Arc(TipableVMobject):
 
 
 class ArcBetweenPoints(Arc):
-    '''
+    """
     Creates an arc passing through the specified points with "angle" as the
     angle subtended at its center.
     Parameters
@@ -291,8 +292,7 @@ class ArcBetweenPoints(Arc):
     -----
     out : ArcBetweenPoints object
         An ArcBetweenPoints object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         start: Vect3,
@@ -307,7 +307,7 @@ class ArcBetweenPoints(Arc):
 
 
 class CurvedArrow(ArcBetweenPoints):
-    '''
+    """
     Creates a curved arrow passing through the specified points with "angle" as the
     angle subtended at its center.
     Parameters
@@ -325,8 +325,7 @@ class CurvedArrow(ArcBetweenPoints):
     -----
     out : CurvedArrow object
         A CurvedArrow object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         start_point: Vect3,
@@ -338,7 +337,7 @@ class CurvedArrow(ArcBetweenPoints):
 
 
 class CurvedDoubleArrow(CurvedArrow):
-    '''
+    """
     Creates a curved double arrow passing through the specified points with "angle" as the
     angle subtended at its center.
     Parameters
@@ -356,8 +355,7 @@ class CurvedDoubleArrow(CurvedArrow):
     -----
     out : CurvedDoubleArrow object
         A CurvedDoubleArrow object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         start_point: Vect3,
@@ -369,7 +367,7 @@ class CurvedDoubleArrow(CurvedArrow):
 
 
 class Circle(Arc):
-    '''
+    """
     Creates a circle.
     Parameters
     -----
@@ -384,8 +382,7 @@ class Circle(Arc):
     -----
     out : Circle object
         A Circle object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         start_angle: float = 0,
@@ -421,7 +418,7 @@ class Circle(Arc):
 
 
 class Dot(Circle):
-    '''
+    """
     Creates a dot. Dot is a filled white circle with no bounary and DEFAULT_DOT_RADIUS.
     Parameters
     -----
@@ -434,8 +431,7 @@ class Dot(Circle):
     -----
     out : Dot object
         A Dot object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         point: Vect3 = ORIGIN,
@@ -458,7 +454,7 @@ class Dot(Circle):
 
 
 class SmallDot(Dot):
-    '''
+    """
     Creates a small dot. Small dot is a filled white circle with no bounary and DEFAULT_SMALL_DOT_RADIUS.
     Parameters
     -----
@@ -471,8 +467,7 @@ class SmallDot(Dot):
     -----
     out : SmallDot object
         A SmallDot object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         point: Vect3 = ORIGIN,
@@ -483,7 +478,7 @@ class SmallDot(Dot):
 
 
 class Ellipse(Circle):
-    '''
+    """
     Creates an ellipse.
     Parameters
     -----
@@ -500,8 +495,7 @@ class Ellipse(Circle):
     -----
     out : Ellipse object
         An Ellipse object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         width: float = 2.0,
@@ -514,7 +508,7 @@ class Ellipse(Circle):
 
 
 class AnnularSector(VMobject):
-    '''
+    """
     Creates an annular sector.
     Parameters
     -----
@@ -534,8 +528,7 @@ class AnnularSector(VMobject):
     -----
     out : AnnularSector object
         An AnnularSector object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         angle: float = TAU / 4,
@@ -572,7 +565,7 @@ class AnnularSector(VMobject):
 
 
 class Sector(AnnularSector):
-    '''
+    """
     Creates a sector.
     Parameters
     -----
@@ -591,8 +584,7 @@ class Sector(AnnularSector):
     -----
     out : Sector object
         An Sector object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         angle: float = TAU / 4,
@@ -608,7 +600,7 @@ class Sector(AnnularSector):
 
 
 class Annulus(VMobject):
-    '''
+    """
     Creates an annulus.
     Parameters
     -----
@@ -625,8 +617,7 @@ class Annulus(VMobject):
     -----
     out : Annulus object
         An Annulus object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         inner_radius: float = 1.0,
@@ -653,7 +644,7 @@ class Annulus(VMobject):
 
 
 class Line(TipableVMobject):
-    '''
+    """
     Creates a line joining the points "start" and "end".
     Parameters
     -----
@@ -668,8 +659,7 @@ class Line(TipableVMobject):
     -----
     out : Line object
         A Line object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         start: Vect3 | Mobject = LEFT,
@@ -789,7 +779,7 @@ class Line(TipableVMobject):
 
 
 class DashedLine(Line):
-    '''
+    """
     Creates a dashed line joining the points "start" and "end".
     Parameters
     -----
@@ -806,8 +796,7 @@ class DashedLine(Line):
     -----
     out : DashedLine object
         A DashedLine object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         start: Vect3 = LEFT,
@@ -857,7 +846,7 @@ class DashedLine(Line):
 
 
 class TangentLine(Line):
-    '''
+    """
     Creates a tangent line to the specified vectorized math object.
     Parameters
     -----
@@ -875,8 +864,7 @@ class TangentLine(Line):
     -----
     out : TangentLine object
         A TangentLine object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         vmob: VMobject,
@@ -892,7 +880,7 @@ class TangentLine(Line):
 
 
 class Elbow(VMobject):
-    '''
+    """
     Creates an elbow. Elbow is an L-shaped shaped object.
     Parameters
     -----
@@ -906,8 +894,7 @@ class Elbow(VMobject):
     -----
     out : Elbow object
         A Elbow object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         width: float = 0.2,
@@ -921,6 +908,29 @@ class Elbow(VMobject):
 
 
 class StrokeArrow(Line):
+    """
+    Creates a stroke arrow.
+    Parameters
+    -----
+    start : array_like
+        Starting point of the stroke arrow
+    end : array_like
+        Ending point of the stroke arrow
+    stroke_color : ManimColor
+        Color of the stroke
+    stroke_width : float
+        Width of the stroke
+    buff : float
+        Buffer of the stroke arrow
+    tip_width_ratio : float
+        Ratio of the tip width
+    tip_len_to_width : float
+        Ratio of the tip length to width
+    max_tip_length_to_length_ratio : float
+        Maximum ratio of the tip length to length
+    max_width_to_length_ratio : float
+        Maximum ratio of the width to length
+    """
     def __init__(
         self,
         start: Vect3 | Mobject,
@@ -1017,7 +1027,7 @@ class StrokeArrow(Line):
 
 
 class Arrow(Line):
-    '''
+    """
     Creates an arrow.
 
     Parameters
@@ -1025,7 +1035,7 @@ class Arrow(Line):
     start : array_like
         Starting point of the arrow
     end : array_like
-        Ending point of the arrow 
+        Ending point of the arrow
     buff : float, optional
         Buffer distance from the start and end points. Default is MED_SMALL_BUFF.
     path_arc : float, optional
@@ -1056,8 +1066,7 @@ class Arrow(Line):
     -------
     Arrow
         An Arrow object satisfying the specified parameters.
-    '''
-
+    """
     tickness_multiplier = 0.015
 
     def __init__(
@@ -1220,7 +1229,7 @@ class Arrow(Line):
 
 
 class Vector(Arrow):
-    '''
+    """
     Creates a vector. Vector is an arrow with start point as ORIGIN
     Parameters
     -----
@@ -1232,8 +1241,7 @@ class Vector(Arrow):
     -----
     out : Vector object
         A Vector object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         direction: Vect3 = RIGHT,
@@ -1246,7 +1254,7 @@ class Vector(Arrow):
 
 
 class CubicBezier(VMobject):
-    '''
+    """
     Creates a cubic Bézier curve.
 
     A cubic Bézier curve is defined by four control points: two anchor points (start and end)
@@ -1271,8 +1279,7 @@ class CubicBezier(VMobject):
     CubicBezier
         A CubicBezier object representing the specified cubic Bézier curve.
 
-    '''
-
+    """
     def __init__(
         self,
         a0: Vect3,
@@ -1286,7 +1293,7 @@ class CubicBezier(VMobject):
 
 
 class Polygon(VMobject):
-    '''
+    """
     Creates a polygon by joining the specified vertices.
     Parameters
     -----
@@ -1298,8 +1305,7 @@ class Polygon(VMobject):
     -----
     out : Polygon object
         A Polygon object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         *vertices: Vect3,
@@ -1348,6 +1354,19 @@ class Polygon(VMobject):
 
 
 class Polyline(VMobject):
+    """
+    Creates a polyline by joining the specified vertices.
+    Parameters
+    -----
+    *vertices : array_like
+        Vertex of the polyline
+    Examples :
+            polyline = Polyline((-3,0,0), (3,0,0), (0,3,0))
+    Returns
+    -----
+    out : Polyline object
+        A Polyline object satisfying the specified parameters
+    """
     def __init__(
         self,
         *vertices: Vect3,
@@ -1358,7 +1377,7 @@ class Polyline(VMobject):
 
 
 class RegularPolygon(Polygon):
-    '''
+    """
     Creates a regular polygon of edge length 1 at the center of the screen.
     Parameters
     -----
@@ -1372,8 +1391,7 @@ class RegularPolygon(Polygon):
     -----
     out : RegularPolygon object
         A RegularPolygon object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         n: int = 6,
@@ -1390,7 +1408,7 @@ class RegularPolygon(Polygon):
 
 
 class Triangle(RegularPolygon):
-    '''
+    """
     Creates a triangle of edge length 1 at the center of the screen.
     Parameters
     -----
@@ -1402,13 +1420,32 @@ class Triangle(RegularPolygon):
     -----
     out : Triangle object
         A Triangle object satisfying the specified parameters
-    '''
-
+    """
     def __init__(self, **kwargs):
         super().__init__(n=3, **kwargs)
 
 
 class ArrowTip(Triangle):
+    """
+    Creates an arrow tip.
+
+    Parameters
+    ----------
+    angle : float
+        The angle of the arrow tip.
+    width : float
+        The width of the arrow tip.
+    length : float
+        The length of the arrow tip.
+    fill_opacity : float
+        The fill opacity of the arrow tip.
+    fill_color : ManimColor
+        The fill color of the arrow tip.
+    stroke_width : float
+        The stroke width of the arrow tip.
+    tip_style : int
+        The style of the arrow tip.
+    """
     def __init__(
         self,
         angle: float = 0,
@@ -1454,7 +1491,7 @@ class ArrowTip(Triangle):
 
 
 class Rectangle(Polygon):
-    '''
+    """
     Creates a rectangle at the center of the screen.
     Parameters
     -----
@@ -1468,8 +1505,7 @@ class Rectangle(Polygon):
     -----
     out : Rectangle object
         A Rectangle object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         width: float = 4.0,
@@ -1488,7 +1524,7 @@ class Rectangle(Polygon):
 
 
 class Square(Rectangle):
-    '''
+    """
     Creates a square at the center of the screen.
     Parameters
     -----
@@ -1500,14 +1536,13 @@ class Square(Rectangle):
     -----
     out : Square object
         A Square object satisfying the specified parameters
-    '''
-
+    """
     def __init__(self, side_length: float = 2.0, **kwargs):
         super().__init__(side_length, side_length, **kwargs)
 
 
 class RoundedRectangle(Rectangle):
-    '''
+    """
     Creates a rectangle with round edges at the center of the screen.
     Parameters
     -----
@@ -1523,8 +1558,7 @@ class RoundedRectangle(Rectangle):
     -----
     out : RoundedRectangle object
         A RoundedRectangle object satisfying the specified parameters
-    '''
-
+    """
     def __init__(
         self,
         width: float = 4.0,

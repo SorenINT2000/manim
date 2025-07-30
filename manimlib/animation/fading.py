@@ -20,6 +20,21 @@ if TYPE_CHECKING:
 
 
 class Fade(Transform):
+    """
+    Abstract base class for fading animations.
+
+    This class is not meant to be used directly, but rather to be subclassed
+    by other fading animations.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be faded.
+    shift
+        The vector to shift the mobject by during the animation.
+    scale
+        The factor to scale the mobject by during the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -33,6 +48,17 @@ class Fade(Transform):
 
 
 class FadeIn(Fade):
+    """
+    Animates the fading in of a mobject.
+
+    This animation fades the mobject in from a specified point, with a
+    specified scale and shift.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be faded in.
+    """
     def create_target(self) -> Mobject:
         return self.mobject.copy()
 
@@ -45,6 +71,22 @@ class FadeIn(Fade):
 
 
 class FadeOut(Fade):
+    """
+    Animates the fading out of a mobject.
+
+    This animation fades the mobject out to a specified point, with a
+    specified scale and shift.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be faded out.
+    remover
+        A boolean indicating whether the mobject should be removed from the
+        scene after the animation is complete.
+    final_alpha_value
+        The alpha value at which the animation finishes.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -69,6 +111,18 @@ class FadeOut(Fade):
 
 
 class FadeInFromPoint(FadeIn):
+    """
+    Animates the fading in of a mobject from a point.
+
+    This animation fades the mobject in from a specified point.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be faded in.
+    point
+        The point to fade the mobject in from.
+    """
     def __init__(self, mobject: Mobject, point: Vect3, **kwargs):
         super().__init__(
             mobject,
@@ -79,6 +133,16 @@ class FadeInFromPoint(FadeIn):
 
 
 class FadeOutToPoint(FadeOut):
+    """
+fades the mobject out to a specified point.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be faded out.
+    point
+        The point to fade the mobject out to.
+    """
     def __init__(self, mobject: Mobject, point: Vect3, **kwargs):
         super().__init__(
             mobject,
@@ -89,6 +153,24 @@ class FadeOutToPoint(FadeOut):
 
 
 class FadeTransform(Transform):
+    """
+    Animates the transformation of a mobject into a target mobject, with a fading effect.
+
+    This animation transforms the mobject into the target mobject, while
+    fading the original mobject out and the target mobject in.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be transformed.
+    target_mobject
+        The target mobject of the transformation.
+    stretch
+        A boolean indicating whether the mobject should be stretched during
+        the transformation.
+    dim_to_match
+        The dimension to match during the transformation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -138,6 +220,19 @@ class FadeTransform(Transform):
 
 
 class FadeTransformPieces(FadeTransform):
+    """
+    Animates the transformation of the pieces of a mobject into the pieces of a target mobject.
+
+    This animation transforms the pieces of the mobject into the pieces of the
+    target mobject, with a fading effect.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be transformed.
+    target_mobject
+        The target mobject of the transformation.
+    """
     def begin(self) -> None:
         self.mobject[0].align_family(self.mobject[1])
         super().begin()
@@ -173,6 +268,22 @@ class VFadeIn(Animation):
 
 
 class VFadeOut(VFadeIn):
+    """
+    Animates the fading out of a vectorized mobject.
+
+    This animation is the reverse of `VFadeIn`, and it fades the vectorized
+    mobject out of the screen.
+
+    Parameters
+    ----------
+    vmobject
+        The vectorized mobject to be faded out.
+    remover
+        A boolean indicating whether the mobject should be removed from the
+        scene after the animation is complete.
+    final_alpha_value
+        The alpha value at which the animation finishes.
+    """
     def __init__(
         self,
         vmobject: VMobject,
@@ -197,6 +308,24 @@ class VFadeOut(VFadeIn):
 
 
 class VFadeInThenOut(VFadeIn):
+    """
+    Animates the fading in and then out of a vectorized mobject.
+
+    This animation fades the vectorized mobject in and then out of the
+    screen.
+
+    Parameters
+    ----------
+    vmobject
+        The vectorized mobject to be faded in and out.
+    rate_func
+        The rate function to use for the animation.
+    remover
+        A boolean indicating whether the mobject should be removed from the
+        scene after the animation is complete.
+    final_alpha_value
+        The alpha value at which the animation finishes.
+    """
     def __init__(
         self,
         vmobject: VMobject,

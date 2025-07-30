@@ -17,6 +17,9 @@ from manimlib.utils.simple_functions import hash_string
 
 
 def get_tex_template_config(template_name: str) -> dict[str, str]:
+    """
+    Returns the config for a tex template.
+    """
     name = template_name.replace(" ", "_").lower()
     template_path = os.path.join(get_manim_dir(), "manimlib", "tex_templates.yml")
     with open(template_path, encoding="utf-8") as tex_templates_file:
@@ -38,6 +41,9 @@ def get_tex_config(template: str = "") -> tuple[str, str]:
 
 
 def get_full_tex(content: str, preamble: str = ""):
+    """
+    Returns a full tex string.
+    """
     return "\n\n".join((
         "\\documentclass[preview]{standalone}",
         preamble,
@@ -83,6 +89,9 @@ def latex_to_svg(
 
 @cache_on_disk
 def full_tex_to_svg(full_tex: str, compiler: str = "latex", message: str = ""):
+    """
+    Converts a full tex string to an svg.
+    """
     if message:
         print(message, end="\r")
 
@@ -148,4 +157,7 @@ def full_tex_to_svg(full_tex: str, compiler: str = "latex", message: str = ""):
 
 
 class LatexError(Exception):
+    """
+    Raised when latex compilation fails.
+    """
     pass

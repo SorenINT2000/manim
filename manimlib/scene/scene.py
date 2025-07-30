@@ -50,6 +50,42 @@ if TYPE_CHECKING:
 
 
 class Scene(object):
+    """
+    A scene is the canvas on which animations are drawn.
+
+    This is the main class that you will use to create your animations. It
+    is responsible for managing the mobjects on the screen, playing
+    animations, and handling events.
+
+    Parameters
+    ----------
+    window
+        The window in which the scene is displayed.
+    camera_config
+        A dictionary of configuration options for the camera.
+    file_writer_config
+        A dictionary of configuration options for the file writer.
+    skip_animations
+        A boolean indicating whether to skip animations.
+    always_update_mobjects
+        A boolean indicating whether to always update mobjects.
+    start_at_animation_number
+        The animation number to start at.
+    end_at_animation_number
+        The animation number to end at.
+    show_animation_progress
+        A boolean indicating whether to show the animation progress.
+    leave_progress_bars
+        A boolean indicating whether to leave the progress bars on the
+        screen after the animation is complete.
+    preview_while_skipping
+        A boolean indicating whether to preview the scene while skipping
+        animations.
+    presenter_mode
+        A boolean indicating whether to use presenter mode.
+    default_wait_time
+        The default wait time between animations.
+    """
     random_seed: int = 0
     pan_sensitivity: float = 0.5
     scroll_sensitivity: float = 20
@@ -880,6 +916,20 @@ class Scene(object):
 
 
 class SceneState():
+    """
+    A class that represents the state of a scene.
+
+    This class is used to save and restore the state of a scene. This is
+    useful for interactive development, as it allows you to undo and redo
+    changes to the scene.
+
+    Parameters
+    ----------
+    scene
+        The scene whose state is to be saved.
+    ignore
+        A list of mobjects to ignore when saving the state.
+    """
     def __init__(self, scene: Scene, ignore: list[Mobject] | None = None):
         self.time = scene.time
         self.num_plays = scene.num_plays
@@ -924,10 +974,17 @@ class SceneState():
 
 
 class EndScene(Exception):
+    """An exception that is raised when the scene should end."""
     pass
 
 
 class ThreeDScene(Scene):
+    """
+    A scene that is rendered in 3D.
+
+    This class is a subclass of `Scene` and is used to create scenes that
+    are rendered in 3D. It provides a 3D camera and a 3D coordinate system.
+    """
     samples = 4
     default_frame_orientation = (-30, 70)
     always_depth_test = True

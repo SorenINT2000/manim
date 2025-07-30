@@ -72,6 +72,13 @@ class Button(Mobject):
 # Controls
 
 class ControlMobject(ValueTracker):
+    """
+    An object that can be interacted with to control a value.
+
+    This is a base class for creating interactive controls. It is a subclass of
+    ValueTracker, so it can be used to track a value that can be changed by
+    the user.
+    """
     def __init__(self, value: float, *mobjects: Mobject, **kwargs):
         super().__init__(value=value, **kwargs)
         self.add(*mobjects)
@@ -95,6 +102,9 @@ class ControlMobject(ValueTracker):
 
 
 class EnableDisableButton(ControlMobject):
+    """
+    A button that can be enabled or disabled.
+    """
     def __init__(
         self,
         value: bool = True,
@@ -136,6 +146,9 @@ class EnableDisableButton(ControlMobject):
 
 
 class Checkbox(ControlMobject):
+    """
+    A checkbox that can be checked or unchecked.
+    """
     def __init__(
         self,
         value: bool = True,
@@ -211,6 +224,9 @@ class Checkbox(ControlMobject):
 
 
 class LinearNumberSlider(ControlMobject):
+    """
+    A slider that can be used to select a number from a range.
+    """
     def __init__(
         self,
         value: float = 0,
@@ -275,6 +291,9 @@ class LinearNumberSlider(ControlMobject):
 
 
 class ColorSliders(Group):
+    """
+    A group of sliders that can be used to select a color.
+    """
     def __init__(
         self,
         sliders_kwargs: dict = {},
@@ -380,6 +399,9 @@ class ColorSliders(Group):
 
 
 class Textbox(ControlMobject):
+    """
+    A box that can be used to enter text.
+    """
     def __init__(
         self,
         value: str = "",
@@ -465,6 +487,9 @@ class Textbox(ControlMobject):
 
 
 class ControlPanel(Group):
+    """
+    A panel that contains a group of controls.
+    """
     def __init__(
         self,
         *controls: ControlMobject,

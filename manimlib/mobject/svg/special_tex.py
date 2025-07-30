@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 
 
 class BulletedList(VGroup):
+    """A bulleted list."""
     def __init__(
         self,
         *items: str,
@@ -45,6 +46,7 @@ class BulletedList(VGroup):
 
 
 class TexTextFromPresetString(TexText):
+    """A TexText mobject from a preset string."""
     tex: str = ""
     default_color: ManimColor = DEFAULT_MOBJECT_COLOR
 
@@ -57,6 +59,7 @@ class TexTextFromPresetString(TexText):
 
 
 class Title(TexText):
+    """A title."""
     def __init__(
         self,
         *text_parts: str,

@@ -21,6 +21,37 @@ DEFAULT_ANIMATION_LAG_RATIO = 0
 
 
 class Animation(object):
+    """
+    An animation is an object that manages the transition of a mobject from a
+    starting state to an ending state over a specified run time.
+
+    Parameters
+    ----------
+    mobject
+        The mobject to be animated.
+    run_time
+        The duration of the animation in seconds.
+    time_span
+        A tuple of two floats that specifies the start and end time of the
+        animation, relative to the total run time.
+    lag_ratio
+        A value that controls the timing of animations for submobjects. If 0,
+        all submobjects are animated at the same time. If 1, they are animated
+        successively.
+    rate_func
+        A function that maps a time value (from 0 to 1) to a new value,
+        controlling the pace of the animation.
+    name
+        A string used to identify the animation.
+    remover
+        A boolean indicating whether the mobject should be removed from the
+        scene after the animation is complete.
+    final_alpha_value
+        The alpha value at which the animation finishes.
+    suspend_mobject_updating
+        A boolean indicating whether the mobject's updaters should be
+        suspended during the animation.
+    """
     def __init__(
         self,
         mobject: Mobject,
@@ -207,6 +238,24 @@ class Animation(object):
 
 
 def prepare_animation(anim: Animation | _AnimationBuilder):
+    """
+    Prepare an animation for playing.
+
+    This function prepares an animation for playing. It can take either an
+    `Animation` object or an `_AnimationBuilder` object. If it is an
+    `_AnimationBuilder` object, it will be built into an `Animation`
+    object.
+
+    Parameters
+    ----------
+    anim
+        The animation to prepare.
+
+    Returns
+    -------
+    Animation
+        The prepared animation.
+    """
     if isinstance(anim, _AnimationBuilder):
         return anim.build()
 
